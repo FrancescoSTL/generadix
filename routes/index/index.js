@@ -10,7 +10,13 @@ var brand= "Empowering Citizens in Police Interactions";
 
 // requesting root directory
 router.get('/', function(request, response) {
-	var featuredCases = [{	"caseName":"Police Shooting of Laquan McDonald",
+	var db = request.db;
+    var collection = db.get('usercollection');
+    
+    collection.find({},{},function(e,docs){
+        console.log(docs);
+
+		var featuredCases = [{	"caseName":"Police Shooting of Laquan McDonald",
 							"caseShortDescription":"Officer 1st Degree Murder", 
 							"caseCity":"Chicago, IL", 
 							"caseURL":"/case", 
@@ -38,7 +44,8 @@ router.get('/', function(request, response) {
 							"caseImgURL":"https://www.popularresistance.org/wp-content/uploads/2014/08/1garner.jpg"
 						}
 						];
-	response.render('index.html', {feature: true, featuredCases: featuredCases, title: title, brand: brand});
+		response.render('index.html', {feature: true, featuredCases: featuredCases, title: title, brand: brand, userlist: docs});
+	});
 });
 
 // requesting upload directory

@@ -9,6 +9,9 @@ var nunjucks = require('nunjucks');
 var OptimizelyClient = require('optimizely-node-client');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/test');
 
 var config = require('./lib/config');
 
@@ -36,6 +39,12 @@ env = nunjucks.configure('views', {
 env.addGlobal('brand', config.brand);
 env.addFilter('println', function(str) {
 	console.log(str);
+});
+
+// make our db accessible to routes
+app.use(function(req,res,next){
+    req.db = db;
+    next();
 });
 
 app.use(logger('dev'));

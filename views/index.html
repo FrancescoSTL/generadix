@@ -19,6 +19,10 @@
                     <fieldset id="background">
                         {% if feature %}
                             <div class="field">
+                                {% for user in userlist %}
+                                    <p>{{user.username}}</p>
+                                {% endfor %}
+
                                 <legend>Featured Cases</legend>
                                 <div class="row">
                                     {% for case in featuredCases %}
