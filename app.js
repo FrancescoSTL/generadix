@@ -11,7 +11,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk(process.env.MONGODB_URI);
+var db = monk(process.env.MONGOLAB_URI);
 
 var config = require('./lib/config');
 
