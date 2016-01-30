@@ -16,7 +16,7 @@
         "optimizely-node-client": "^0.5.0",
         "cookie-parser": "^1.4.0",
         "express-session": "^1.12.1",
-        "mongodb": "^2.1.4",
+        "mongodb": "1.4.x",
         "monk": "^1.0.1"
     },
     "devDependencies": {
