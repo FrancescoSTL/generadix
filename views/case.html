@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/assets/styles/index.css" />
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">Case #{{ caseNum }}: {{ caseName }}</li>
+{% endblock %}
+
+{% block head %}
+    <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> {{ caseName }}</h1>
+    <legend>Overview</legend>
+    <div class="field">
+        <p><b>{{caseCity}} - {{caseDate}} at {{caseTime}}</b></p>
+        <p><b>Officer: {{officerName}}</b></p>
+        <p>{{ caseDescription }}</p>
+    </div>
+{% endblock %}
+
+{% block content %}
+        <form id="build-funnelcake" action="/expDetails/" method="get">
+                <div id="caseContain">
+                    <fieldset id="background">
+                        <legend>Evidence</legend>
+                        <div class="field">
+                            <iframe width="560" height="315" src="{{ youtubeURL }}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <div class="field">
+                             <iframe width="560" height="250" frameborder="0" style="border:0" src={{ mapsAPISource }} allowfullscreen></iframe>
+                        </div>
+                        <div class="field"> 
+                            <!-- fb share button -->
+                            <iframe class="" src="https://www.facebook.com/v2.3/plugins/share_button.php?app_id=113869198637480&amp;channel=https%3A%2F%2Fstaticxx.facebook.com%2Fconnect%2Fxd_arbiter.php%3Fversion%3D42%23cb%3Df265dbc59b85784%26domain%3Ddevelopers.facebook.com%26origin%3Dhttps%253A%252F%252Fdevelopers.facebook.com%252Ff265a9ff551fe06%26relation%3Dparent.parent&amp;container_width=613&amp;href=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2Fgoogle.com&amp;layout=button&amp;locale=en_US&amp;sdk=joey" style="border: medium none; visibility: visible; width: 58px; height: 20px;" title="fb:share_button Facebook Social Plugin" scrolling="no" allowfullscreen="true" allowtransparency="true" name="f47d37c556e4ca" frameborder="0" height="1000px" width="1000px"></iframe>
+
+                            <!-- twitter share button -->
+                            <a href="https://twitter.com/share" class="twitter-share-button"{count} data-text="Check out my case on #FedUp">Tweet</a>
+                        </div>
+                    </fieldset>
+                </div>
+        </form>
+
+    <script>
+        //twitter share script
+        !function(d,s,id){
+            var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+            if(!d.getElementById(id))
+            {
+                js=d.createElement(s);
+                js.id=id;
+                js.src=p+'://platform.twitter.com/widgets.js';
+                fjs.parentNode.insertBefore(js,fjs);
+            }
+        }(document, 'script', 'twitter-wjs');
+
+        //fb share script
+        (function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1";
+              fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+{% endblock %}
+

@@ -14,10 +14,15 @@
         <main>
             <nav class="navbar navbar-default navbar-static-top">
                 <div class="container">
-                    <ol class="breadcrumb" style="margin-top:8px;">
-                        <li class="active"><b>FedUp</b></li>
-                        {% block breadcrumb %}{% endblock %}
-                    </ol>
+                    <div class="nav navbar-nav navbar-left">
+                        <ol class="breadcrumb" style="margin-top:8px;">
+                            <li class="active"><b><a href="/" style="text-decoration: none; color: black;">FedUp</a></b></li>
+                            {% block breadcrumb %}{% endblock %}
+                        </ol>
+                    </div>
+                    <div class="nav navbar-nav navbar-right">
+                        <a class="btn btn-default" href="/upload/" role="button" style="margin-top: 10px; height: 40px;">Upload Case</a>
+                    </div>
                 </div>
             </nav>
 
