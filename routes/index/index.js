@@ -12,7 +12,7 @@ var brand= "Empowering Citizens in Police Interactions";
 router.get('/', function(request, response) {
 	var db = request.db;
     var collection = db.get('usercollection');
-    
+
     collection.find({},{},function(e,docs){
         console.log(docs);
 
