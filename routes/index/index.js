@@ -29,6 +29,13 @@ router.get('/', function(request, response) {
 							"caseCity":"Columbia, MO", 
 							"caseURL":"/case", 
 							"caseImgURL":"http://www.gannett-cdn.com/-mm-/3f6586c93baca5feed713bdbb48f05d91be03b0c/c=86-0-937-640&r=x404&c=534x401/local/-/media/2016/01/27/USATODAY/USATODAY/635895248768515224-melissaclick.jpg" 
+						},
+						{
+							"caseName":"Death of Eric Garner in NYC",
+							"caseShortDescription":"Put in chokehold by Staten Island PD", 
+							"caseCity":"Staten Island, NY", 
+							"caseURL":"/case", 
+							"caseImgURL":"https://www.popularresistance.org/wp-content/uploads/2014/08/1garner.jpg"
 						}
 						];
 	response.render('index.html', {feature: true, featuredCases: featuredCases, title: title, brand: brand});
@@ -55,7 +62,7 @@ router.get('/case', function(request, response) {
 					caseDescription: "The shooting of Laquan McDonald occurred on October 20, 2014 in Chicago, Illinois, when McDonald, a 17-year-old black male, was shot 16 times in 13 seconds by Chicago Police Officer Jason Van Dyke. Video of the shooting, captured on one police cruiser's dashboard camera, was released over 13 months after the shooting. Van Dyke was charged with first-degree murder a few hours after the video's release.", 
 					youtubeURL: "https://www.youtube.com/embed/I5Yf0f1b_sU",
 					caseNum: 22400,
-					mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+API_Key,
+					mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+ENV['API_Key'],
 					caseTime: "9:57 PM",
 					caseDate: "October 20, 2014",
 					officerName: "Jason Van Dyke",
