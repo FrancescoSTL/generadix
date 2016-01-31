@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/assets/styles/index.css" />
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">Log In</li>
+{% endblock %}
+
+{% block head %}
+    <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> Whoops, something went wrong.</h1>
+    <p>We couldn't process your registration.</p> 
+{% endblock %}
+
+{% block content %}
+<html>
+  <body>
+    <form action="/login" method="post">
+      <div  style="padding:10px;">
+        Uh, oh. For some reason, we couldn't process your registration. <a href="/register.html">Go Back</a>
+      </div>
+    </form>
+  </body>
+</html>
+{% endblock %}

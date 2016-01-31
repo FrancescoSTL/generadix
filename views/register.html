@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/assets/styles/index.css" />
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">Sign Up</li>
+{% endblock %}
+
+{% block head %}
+    <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> Register an Account</h1>
+    <p>Enter your information below to register and begin uploading cases and commenting.</p> 
+{% endblock %}
+
+{% block content %}
+<html>
+  <body>
+    <form action="/register" method="post">
+      <div  style="padding:10px;">
+        <label>Name:</label>
+        <input type="text" name="username" />
+        <br/>
+      </div>
+      <div  style="padding:10px;">
+        <label>Email:</label>
+        <input type="text" name="email" />
+        <br/>
+      </div>
+      <div style="padding:10px;">
+        <label>Password:</label>
+        <input type="password" name="password" />
+      </div>
+      <div>
+        <input type="submit" value="Sign Up" />
+      </div>
+    </form>
+  </body>
+</html>
+{% endblock %}

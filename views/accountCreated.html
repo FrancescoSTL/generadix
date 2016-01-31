@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/assets/styles/index.css" />
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">Log In</li>
+{% endblock %}
+
+{% block head %}
+    <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> Success! Your account was created.</h1>
+{% endblock %}
+
+{% block content %}
+<html>
+  <body>
+    <form action="/login" method="post">
+      <div  style="padding:10px;">
+        You are now browsing as a registered user on FedUp. Now you can head over to <a href="/myProfile.html">set up your profile</a>.
+      </div>
+    </form>
+  </body>
+</html>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/assets/styles/index.css" />
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">Log In</li>
+{% endblock %}
+
+{% block head %}
+    <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> Login to begin</h1>
+    <p>Enter your login credentials below to begin uploading cases and commenting.</p> 
+{% endblock %}
+
+{% block content %}
+<html>
+  <body>
+    <form action="/login" method="post">
+      <div  style="padding:10px;">
+        <label>Email:</label>
+        <input type="text" name="email" />
+        <br/>
+      </div>
+      <div style="padding:10px;">
+        <label>Password:</label>
+        <input type="password" name="password" />
+      </div>
+      <div>
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+  </body>
+</html>
+{% endblock %}
