@@ -158,15 +158,21 @@ router.post('/login', function(request,response) {
 });
 
 router.get('/login', function(request,response){
-	response.render('login.html', {title: title, brand: brand});
+	response.render('login.html', {title: title, brand: brand, loggedIn: false});
 });
 
 router.get('/register', function(request,response){
-	response.render('register.html', {title: title, brand: brand});
+	response.render('register.html', {title: title, brand: brand, loggedIn: false});
+});
+
+router.get('/logout', function(request,response){
+	request.session.destroy(function (err) {
+		response.redirect(301, '/');
+	});
 });
 
 router.get('/registraionFailure', function(request,response){
-	response.render('resgistrationFailure.html', {title: title, brand: brand, loggedIn: false});
+	response.redirect('index.html', {title: title, brand: brand, loggedIn: false});
 });
 
 router.get('/accountCreated', function(request,response){
