@@ -18,7 +18,7 @@
     <form action="/logout" method="post">
         <div class="row">
             {% for case in userCases %}
-            	<a style="display:block; outline: 0" href="{{case.caseURL}}" >
+            	<a style="display:block; outline: 0" href="/case?caseID={{case._id}}" >
                     <div class="col-md-3" style="height:150px; ">
                         <p style="color: black; font-size:25px">{{case.title}}</p>
                         <p style="color: black;">{{case.date}}

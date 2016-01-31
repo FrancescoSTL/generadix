@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="active">Case #{{ caseNum }}: {{ caseName }}</li>
+    <li class="active">{{ caseName }}</li>
 {% endblock %}
 
 {% block head %}
     <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> {{ caseName }}</h1>
     <legend>Overview</legend>
     <div class="field">
-        <p><b>{{caseCity}} - {{caseDate}} at {{caseTime}}</b></p>
+        <p><b>{{caseCity}} - {{caseDate}}</b></p>
         <p><b>Officer: {{officerName}}</b></p>
         <p>{{ caseDescription }}</p>
     </div>

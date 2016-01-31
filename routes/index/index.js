@@ -138,19 +138,29 @@ router.get('/case', function(request, response) {
 		collection.findOne({'_id': request.session.UID}, function(err, user) {
 			userName = user.username;
 
-			response.render('case.html', {
-							caseName: "Police Shooting of Laquan McDonald", 
-							caseDescription: "The shooting of Laquan McDonald occurred on October 20, 2014 in Chicago, Illinois, when McDonald, a 17-year-old black male, was shot 16 times in 13 seconds by Chicago Police Officer Jason Van Dyke. Video of the shooting, captured on one police cruiser's dashboard camera, was released over 13 months after the shooting. Van Dyke was charged with first-degree murder a few hours after the video's release.", 
-							youtubeURL: "https://www.youtube.com/embed/I5Yf0f1b_sU",
-							caseNum: 22400,
+			var casesCollection = db.get('cases');
+
+			casesCollection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
+				var youtubeURL = chosenCase.youtubeURL;
+				var length = youtubeURL.length;
+				var endIndex = youtubeURL.indexOf(".com/");
+				var youtubeEmbedURL = youtubeURL.slice(0,(endIndex+5)) + "embed/" + youtubeURL.slice((endIndex+13), length);
+				console.log(youtubeEmbedURL);
+
+
+				response.render('case.html', {
+							caseName: chosenCase.title, 
+							caseDescription: chosenCase.description, 
+							youtubeURL: youtubeEmbedURL,
+							caseNum: chosenCase._id,
 							mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
-							caseTime: "9:57 PM",
-							caseDate: "October 20, 2014",
-							officerName: "Jason Van Dyke",
+							caseDate: chosenCase.date,
+							officerName: chosenCase.officerName,
 							caseCity: "Chicago, IL",
 							userName: userName, 
 							loggedIn: true
 							});
+			});
 		});
 	}
 	else
