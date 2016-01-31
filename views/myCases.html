@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/assets/styles/index.css" />
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">My Cases</li>
+{% endblock %}
+
+{% block head %}
+    <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> Your Cases</h1>
+{% endblock %}
+
+{% block content %}
+<html>
+  <body>
+    <form action="/logout" method="post">
+        <div class="row">
+            {% for case in userCases %}
+            	<a style="display:block; outline: 0" href="{{case.caseURL}}" >
+                    <div class="col-md-3" style="height:150px; ">
+                        <p style="color: black; font-size:25px">{{case.title}}</p>
+                        <p style="color: black;">{{case.date}}
+                        <br>{{case.officerName}}</p>
+                    </div>  
+                </a>
+            {% endfor %}
+        </div>
+    </form>
+  </body>
+</html>
+{% endblock %}

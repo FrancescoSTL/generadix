@@ -203,6 +203,17 @@ router.get('/logout', function(request,response){
 	});
 });
 
+router.get('/myCases', function(request,response){
+	var db = request.db;
+	var collection = db.get('cases');
+
+	if(request.session.UID){
+		collection.find({ userCreated: request.session.UID }, function(err, cases) {
+			response.render('myCases.html', {title: title, brand: brand, loggedIn: true, userCases: cases});
+		});
+	}
+});
+
 router.get('/registraionFailure', function(request,response){
 	response.redirect('index.html', {title: title, brand: brand, loggedIn: false});
 });
