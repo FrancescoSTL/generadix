@@ -74,6 +74,38 @@ router.get('/upload', function(request, response) {
 	}
 });
 
+// requesting upload directory
+router.post('/upload', function(request, response) {
+	var db = request.db;
+	var collection = db.get('userInfo');
+	var userName;
+
+	if(request.session.UID){
+		collection.findOne({'_id': request.session.UID}, function(err, user) {
+			userName = user.username;
+
+			var caseCollection = db.get('cases');
+			caseCollection.insert({'title':request.body.caseTitle ,
+									'date':request.body.date,
+									'description':request.body.caseDescription, 
+									'youtubeURL':request.body.youtubeURL,
+									'officerName':request.body.officerName,
+									'userCreated':request.session.UID},
+				function(err, data) {
+
+					response.redirect(301, "/");
+				}
+			);
+
+			
+		});
+	}
+	else
+	{
+		response.render('upload.html', {title: title, brand: brand, userLogged: false});
+	}
+});
+
 // requesting profile directory
 router.get('/profile', function(request, response) {
 	var db = request.db;
