@@ -12,6 +12,7 @@ var brand= "Empowering Citizens in Police Interactions";
 router.get('/', function(request, response) {
 	var db = request.db;
 	var collection = db.get('userInfo');
+	var recentCasesCollection = db.get('cases');
 	var userName;
 
 	var featuredCases = [{	"caseName":"Police Shooting of Laquan McDonald",
@@ -43,16 +44,18 @@ router.get('/', function(request, response) {
 							}
 							];
 
-	if(request.session.UID){
-		collection.findOne({'_id': request.session.UID}, function(err, user) {
-			userName = user.username;
-			response.render('index.html', {feature: true, featuredCases: featuredCases, title: title, brand: brand, userName: userName, loggedIn: true});
-		});
-	}
-	else
-	{
-		response.render('index.html', {feature: true, featuredCases: featuredCases, title: title, brand: brand, loggedIn: false});
-	}
+	recentCasesCollection.find({}, { sort: {$natural: -1 }, limit: 12}, function(err, cases) {
+		if(request.session.UID){
+			collection.findOne({'_id': request.session.UID}, function(err, user) {
+				userName = user.username;
+				response.render('index.html', {feature: true, featuredCases: featuredCases, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true});
+			});
+		}
+		else
+		{
+			response.render('index.html', {feature: true, featuredCases: featuredCases, title: title, brand: brand, recentCases: cases, loggedIn: false});
+		}
+	});
 });
 
 // requesting upload directory
@@ -84,11 +87,16 @@ router.post('/upload', function(request, response) {
 		collection.findOne({'_id': request.session.UID}, function(err, user) {
 			userName = user.username;
 
+			var youtubeURL = request.body.youtubeURL;
+			var length = youtubeURL.length;
+			var endIndex = youtubeURL.indexOf("watch?v=");
+			var youtubeID = youtubeURL.slice((endIndex+8),length);
+
 			var caseCollection = db.get('cases');
 			caseCollection.insert({'title':request.body.caseTitle ,
 									'date':request.body.date,
 									'description':request.body.caseDescription, 
-									'youtubeURL':request.body.youtubeURL,
+									'youtubeURL':youtubeID,
 									'officerName':request.body.officerName,
 									'userCreated':request.session.UID},
 				function(err, data) {
@@ -141,12 +149,7 @@ router.get('/case', function(request, response) {
 			var casesCollection = db.get('cases');
 
 			casesCollection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
-				var youtubeURL = chosenCase.youtubeURL;
-				var length = youtubeURL.length;
-				var endIndex = youtubeURL.indexOf(".com/");
-				var youtubeEmbedURL = youtubeURL.slice(0,(endIndex+5)) + "embed/" + youtubeURL.slice((endIndex+13), length);
-				console.log(youtubeEmbedURL);
-
+				var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
 
 				response.render('case.html', {
 							caseName: chosenCase.title, 
@@ -168,12 +171,7 @@ router.get('/case', function(request, response) {
 		var casesCollection = db.get('cases');
 
 			casesCollection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
-				var youtubeURL = chosenCase.youtubeURL;
-				var length = youtubeURL.length;
-				var endIndex = youtubeURL.indexOf(".com/");
-				var youtubeEmbedURL = youtubeURL.slice(0,(endIndex+5)) + "embed/" + youtubeURL.slice((endIndex+13), length);
-				console.log(youtubeEmbedURL);
-
+				var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
 
 				response.render('case.html', {
 							caseName: chosenCase.title, 
@@ -240,7 +238,7 @@ router.get('/myCases', function(request,response){
 	var userName;
 
 	if(request.session.UID){
-		usersCollection.findOne({'_id': request.session.UID}, function(err, user) {
+		usersCollection.findOne({'_id': request.session.UID}, { sort: { $natural: -1 }, limit: 16}, function(err, user) {
 			userName = user.username;
 
 			casesCollection.find({ userCreated: request.session.UID }, function(err, cases) {

@@ -40,6 +40,21 @@
                                         </a>
                                     {% endfor %}
                                 </div>
+                                <legend>Recent Cases</legend>
+                                 <div class="row">
+                                    {% for case in recentCases %}
+                                        <a style="display:block; outline: 0" href="/case?caseID={{case._id}}" >
+                                            <div class="col-md-3" style="height:350px; ">
+                                                <div class="row" style="height:200px;">
+                                                    <img width="250" height="200" src="http://img.youtube.com/vi/{{case.youtubeURL}}/hqdefault.jpg" >
+                                                </div>
+                                                <p style="color: black; font-size:25px">{{case.title}}</p>
+                                                <p style="color: black;">{{case.date}}
+                                                <br>{{case.officerName}}</p>
+                                            </div>  
+                                        </a>
+                                    {% endfor %}
+                                </div>
                             </div>
                         {% endif %}
                     </fieldset>
