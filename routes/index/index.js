@@ -190,27 +190,37 @@ router.get('/case', function(request, response) {
 	}
 });
 
+router.get('/login', function(request,response){
+	response.render('login.html', {title: title, brand: brand, loggedIn: false});
+});
+
 router.post('/login', function(request,response) {
 	var db = request.db;
 	var collection = db.get('userInfo');
 	
-	collection.findOne({'email': request.body.email}, function(err, user) {
+	collection.findOne({'email':request.body.email}, function(err, user) {
 		    if (err) {
-		      response.redirect('loginFailure.html', {title: title, brand: brand, loggedIn: false});
+		    	console.log(err);
+		      response.redirect(301, "/loginFailure");
      	    }
-	        if (!user) {
-		      response.redirect('loginFailure.html', {title: title, brand: brand, loggedIn: false});
+	        else if (!user) {
+	        	console.log("NO SUCH USER");
+		      response.redirect(301, "/loginFailure");
 		    }
-	        if (user.password != request.body.password) {
-		      response.redirect('loginFailure.html', {title: title, brand: brand, loggedIn: false});
+	        else if (user.password != request.body.password) {
+	        	console.log("PASSWORDS NOT EQUAL");
+		      response.redirect(301, "/loginFailure");
 		    }
-		    request.session.UID = user._id;
-		    response.redirect(301, "/");
-	});
+		    else
+		    {
+			    request.session.UID = user._id;
+			    response.redirect(301, "/");
+		    }
+	})
 });
 
-router.get('/login', function(request,response){
-	response.render('login.html', {title: title, brand: brand, loggedIn: false});
+router.get('/loginFailure', function(request,response){
+	response.render('loginFailure.html', {title: title, brand: brand, loggedIn: false});
 });
 
 router.get('/register', function(request,response){
@@ -225,12 +235,22 @@ router.get('/logout', function(request,response){
 
 router.get('/myCases', function(request,response){
 	var db = request.db;
-	var collection = db.get('cases');
+	var casesCollection = db.get('cases');
+	var usersCollection = db.get('userInfo');
+	var userName;
 
 	if(request.session.UID){
-		collection.find({ userCreated: request.session.UID }, function(err, cases) {
-			response.render('myCases.html', {title: title, brand: brand, loggedIn: true, userCases: cases});
+		usersCollection.findOne({'_id': request.session.UID}, function(err, user) {
+			userName = user.username;
+
+			casesCollection.find({ userCreated: request.session.UID }, function(err, cases) {
+				response.render('myCases.html', {title: title, brand: brand, loggedIn: true, userName: userName, userCases: cases});
+			});
 		});
+	}
+	else
+	{
+		response.redirect(301, "/");
 	}
 });
 

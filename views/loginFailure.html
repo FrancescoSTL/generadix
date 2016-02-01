@@ -10,15 +10,17 @@
 
 {% block head %}
     <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> Whoops, something went wrong.</h1>
-    <p>We couldn't process your registration.</p> 
 {% endblock %}
 
 {% block content %}
 <html>
   <body>
     <form action="/login" method="post">
-      <div  style="padding:10px;">
-        Uh, oh. For some reason, we couldn't process your registration. <a href="/register.html">Go Back</a>
+      <div style="padding: 10px 0px 10px 0px;">
+        Uh, oh. For some reason, we couldn't log you in. Please ensure your login credentials are correct.
+      </div>
+      <div>
+        <a class="btn btn-default" href="/login" role="button" style="margin-top: 10px; height: 40px;">Go Back</a>
       </div>
     </form>
   </body>
