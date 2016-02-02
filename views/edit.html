@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/assets/styles/index.css" />
+    
+{% endblock %}
+
+{% block breadcrumb     %}
+    <li class="active">Editing {{caseTitle}}</li>
+{% endblock %}
+
+{% block head %}
+    <h1>Editing {{caseTitle}}</h1>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}
+
+{% block content %}
+        <form id="build-case" action="/edit?caseID={{caseNum}}" method="post">
+                    <fieldset id="background">
+                        <legend>Case Type</legend>
+                        <div class="field">
+                            <div class="field">
+                                <div>
+                                    <p>Case Title:</p>
+                                </div>
+                                <input required autofocus required style="width:50%;" name="caseTitle" type="text" value="{{caseName}}">
+                                </input>
+                            </div>
+
+                            <div class="field">
+                                <div>
+                                    <p>Date:</p>
+                                </div>
+                                 <input required id="date" type="date" name="date" value="{{caseDate}}">
+                                </input>
+                            </div>
+
+                            <div class="field">
+                                <div>
+                                    <p>Description:</p>
+                                </div>
+                                <textarea required name="caseDescription" rows="3" cols="150">{{ caseDescription }}</textarea>
+                            </div>
+
+                            <div class="field">
+                                <div>
+                                    <p>Youtube URL:</p>
+                                </div>
+                                <input required type="url" style="width:50%;" name="youtubeURL" value="https://youtube.com/watch?v={{youtubeURL}}">
+                                </input>
+                            </div>
+
+                            <div class="field">
+                                <div>
+                                    <p>Officer Name:</p>
+                                </div>
+                                <input required style="width:50%;" name="officerName" type="text" value="{{officerName}}">
+                                </input>
+                            </div>
+                        </div>
+                    </fieldset>
+
+            <input type="submit" value="Save" />
+        </form>
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+  <script>
+    $(function() {
+    $( "#date" ).datepicker();
+  });
+    </script>
+
+{% endblock %}
+
