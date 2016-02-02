@@ -9,14 +9,29 @@
 {% endblock %}
 
 {% block head %}
-    <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> {{ caseName }}</h1>
-    <legend>Overview</legend>
-    <div class="field">
-        <p><b>{{caseCity}} - {{caseDate}}</b></p>
-        <p><b>Officer: {{officerName}}</b></p>
-        <p>{{ caseDescription }}</p>
+    <h1>{{ caseName }}</h1>
+    <div class="options" style="margin: 0px 0px 20px 0px;">
+        <div class="col-md-1" style="padding: 5px 0px 20px 0px;">
+            <b>Options:</b>
+        </div>
+        <div class="col-md-1" style="padding: 5px 0px 20px 0px;">
+            <a href="/edit?caseID={{caseNum}}"><b>Edit</b></a>
+        </div>
+        <div class="col-md-1" style="padding: 5px 0px 20px 0px;">
+            <a href="/delete"><b>Delete</b></a>
+        </div>
     </div>
-{% endblock %}
+    <br>
+    <br>
+    <div style="margin: 10px 0px 0px 0px">
+        <legend>Overview</legend>
+        <div class="field">
+            <p><b>{{caseCity}} - {{caseDate}}</b></p>
+            <p><b>Officer: {{officerName}}</b></p>
+            <p>{{ caseDescription }}</p>
+        </div>
+    </div>
+    {% endblock %}
 
 {% block content %}
         <form id="build-funnelcake" action="/expDetails/" method="get">

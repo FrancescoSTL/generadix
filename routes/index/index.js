@@ -219,6 +219,108 @@ router.post('/login', function(request,response) {
 	})
 });
 
+router.get("/edit", function(request,response){
+	var db = request.db;
+	var collection = db.get('cases');
+	var userCollection = db.get('userInfo');
+	var userName;
+
+	// if the user is logged in
+	if(request.session.UID){
+		// find them
+		userCollection.findOne({'_id': request.session.UID}, function(err, user) {
+			// save their user name
+			userName = user.username;
+
+			// find the case they want to edit
+			collection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
+
+					// if they created the case they want to edit, let them
+					if(chosenCase.userCreated = request.session.UID)
+					{
+						response.render('edit.html', {
+									caseName: chosenCase.title, 
+									caseDescription: chosenCase.description, 
+									youtubeURL: chosenCase.youtubeURL,
+									caseNum: chosenCase._id,
+									caseDate: chosenCase.date,
+									officerName: chosenCase.officerName,
+									userName: userName, 
+									loggedIn: true
+									});
+					}
+					// if not, redirect them to the homepage (for now). In the future we should redirect to an improper permissions page
+					else
+					{
+						response.redirect(301, "/");
+					}
+				
+			});
+		});	
+	}
+	// if the user is not logged in, send them back to the case page
+	else
+	{
+		response.redirect(301, "/case?caseID="+request.query.caseID);
+	}
+
+});
+
+router.post("/edit", function(request,response){
+	var db = request.db;
+	var collection = db.get('cases');
+	var userCollection = db.get('userInfo');
+	var userName;
+
+	// if the user is logged in
+	if(request.session.UID){
+		// find them
+		userCollection.findOne({'_id': request.session.UID}, function(err, user) {
+			// save their user name
+			userName = user.username;
+
+			// find the case they want to edit
+			collection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
+
+					// if they created the case they want to edit, let them
+					if(chosenCase.userCreated = request.session.UID)
+					{
+						var youtubeURL = request.body.youtubeURL;
+						var length = youtubeURL.length;
+						var endIndex = youtubeURL.indexOf("watch?v=");
+						var youtubeID = youtubeURL.slice((endIndex+8),length);
+
+						// update the entry based upon their request
+						collection.update({'_id': request.query.caseID}, {
+											'title':request.body.caseTitle,
+											'date':request.body.date,
+											'description':request.body.caseDescription, 
+											'youtubeURL':youtubeID,
+											'officerName':request.body.officerName,
+											'userCreated':request.session.UID}, 
+											function(err, caseI)
+											{
+												response.redirect(301, "/case?caseID="+request.query.caseID);
+											});
+					}
+					// if the user is not the one who created the case, send them back to the case page (for now). In the future, we will send them to inadquate permissions page
+					else
+					{
+						response.redirect(301, "/case?caseID="+request.query.caseID);
+					}
+
+			});
+		});
+	}
+	// if the user is not logged in, send them back to the case page (for now). In the future, we will send them to inadquate permissions page
+	else
+	{
+		response.redirect(301, "/case?caseID="+request.query.caseID);
+	}
+
+});
+
+
 router.get('/loginFailure', function(request,response){
 	response.render('loginFailure.html', {title: title, brand: brand, loggedIn: false});
 });
