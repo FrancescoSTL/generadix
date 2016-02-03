@@ -22,6 +22,16 @@
                     <fieldset id="background">
                         <legend>Case Type</legend>
                         <div class="field">
+                        	<select name="privacy">
+                        		{% for setting in privacySettings %}
+							        <option value="{{setting.id}}" 
+							        {% if (setting.id == privacySelected) %} selected="selected" {% endif %}
+							        >
+							        {{ setting.text }}
+							        </option>
+							    {% endfor %}
+
+	                        </select>
                             <div class="field">
                                 <div>
                                     <p>Case Title:</p>

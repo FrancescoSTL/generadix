@@ -44,7 +44,7 @@ router.get('/', function(request, response) {
 							}
 							];
 
-	recentCasesCollection.find({}, { sort: {$natural: -1 }, limit: 12}, function(err, cases) {
+	recentCasesCollection.find({"privacy": "0"}, { sort: {$natural: -1 }, limit: 12}, function(err, cases) {
 		if(request.session.UID){
 			collection.findOne({'_id': request.session.UID}, function(err, user) {
 				userName = user.username;
@@ -98,7 +98,8 @@ router.post('/upload', function(request, response) {
 									'description':request.body.caseDescription, 
 									'youtubeURL':youtubeID,
 									'officerName':request.body.officerName,
-									'userCreated':request.session.UID},
+									'userCreated':request.session.UID,
+									'privacy':request.body.privacy},
 				function(err, data) {
 
 					response.redirect(301, "/");
@@ -153,18 +154,26 @@ router.get('/case', function(request, response) {
 			casesCollection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
 				var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
 
-				response.render('case.html', {
-							caseName: chosenCase.title, 
-							caseDescription: chosenCase.description, 
-							youtubeURL: youtubeEmbedURL,
-							caseNum: chosenCase._id,
-							mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
-							caseDate: chosenCase.date,
-							officerName: chosenCase.officerName,
-							caseCity: "Chicago, IL",
-							userName: userName, 
-							loggedIn: true
-							});
+				if((chosenCase.userCreated == request.session.UID) || chosenCase.privacy == "0")
+				{
+					response.render('case.html', {
+								caseName: chosenCase.title, 
+								caseDescription: chosenCase.description, 
+								youtubeURL: youtubeEmbedURL,
+								caseNum: chosenCase._id,
+								mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
+								caseDate: chosenCase.date,
+								officerName: chosenCase.officerName,
+								caseCity: "Chicago, IL",
+								userName: userName, 
+								loggedIn: true
+								});
+				}
+				// if not, they don't have permission to view the case, so redirect them to the homepage (for now). Eventually will redirect to a insufficient permission page
+				else
+				{
+					response.redirect(301, "/");
+				}
 			});
 		});
 	}
@@ -175,17 +184,25 @@ router.get('/case', function(request, response) {
 			casesCollection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
 				var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
 
-				response.render('case.html', {
-							caseName: chosenCase.title, 
-							caseDescription: chosenCase.description, 
-							youtubeURL: youtubeEmbedURL,
-							caseNum: chosenCase._id,
-							mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
-							caseDate: chosenCase.date,
-							officerName: chosenCase.officerName,
-							caseCity: "Chicago, IL",
-							loggedIn: false
-							});
+				if(chosenCase.privacy == "0")
+				{
+					response.render('case.html', {
+								caseName: chosenCase.title, 
+								caseDescription: chosenCase.description, 
+								youtubeURL: youtubeEmbedURL,
+								caseNum: chosenCase._id,
+								mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
+								caseDate: chosenCase.date,
+								officerName: chosenCase.officerName,
+								caseCity: "Chicago, IL",
+								loggedIn: false
+								});
+				}
+				// if not, they don't have permission to view the case, so redirect them to the homepage (for now). Eventually will redirect to a insufficient permission page
+				else
+				{
+					response.redirect(301, "/");
+				}
 			});
 	}
 });
@@ -224,6 +241,7 @@ router.get("/edit", function(request,response){
 	var collection = db.get('cases');
 	var userCollection = db.get('userInfo');
 	var userName;
+	var privacySettings = [{ id : 0, text : "Public" }, { id : 1, text : "Private" }, { id : 2, text : "Private with Lawyer Access" }];
 
 	// if the user is logged in
 	if(request.session.UID){
@@ -236,7 +254,7 @@ router.get("/edit", function(request,response){
 			collection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
 
 					// if they created the case they want to edit, let them
-					if(chosenCase.userCreated = request.session.UID)
+					if(chosenCase.userCreated == request.session.UID)
 					{
 						response.render('edit.html', {
 									caseName: chosenCase.title, 
@@ -246,6 +264,8 @@ router.get("/edit", function(request,response){
 									caseDate: chosenCase.date,
 									officerName: chosenCase.officerName,
 									userName: userName, 
+									privacySelected: chosenCase.privacy,
+									privacySettings: privacySettings,
 									loggedIn: true
 									});
 					}
@@ -283,7 +303,7 @@ router.post("/edit", function(request,response){
 			collection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
 
 					// if they created the case they want to edit, let them
-					if(chosenCase.userCreated = request.session.UID)
+					if(chosenCase.userCreated == request.session.UID)
 					{
 						var youtubeURL = request.body.youtubeURL;
 						var length = youtubeURL.length;
@@ -297,7 +317,8 @@ router.post("/edit", function(request,response){
 											'description':request.body.caseDescription, 
 											'youtubeURL':youtubeID,
 											'officerName':request.body.officerName,
-											'userCreated':request.session.UID}, 
+											'userCreated':request.session.UID,
+											'privacy':request.body.privacy}, 
 											function(err, caseI)
 											{
 												response.redirect(301, "/case?caseID="+request.query.caseID);
@@ -339,6 +360,7 @@ router.get('/register', function(request,response){
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/logout', function(request,response){
+	response.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
 	request.session.destroy(function (err) {
 		response.render(301, '/logout');
 	});
