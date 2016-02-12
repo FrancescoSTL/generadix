@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    <link rel="stylesheet" href="/assets/styles/index.css" />
+    
+{% endblock %}
+
+{% block breadcrumb     %}
+    <li class="active">Deleting {{caseTitle}}</li>
+{% endblock %}
+
+{% block head %}
+    <h1>Do you really want to delete {{caseTitle}}?</h1>
+    <p>If you delete this case, it will be gone forever and ever. Do you want to proceed?</p>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}
+
+{% block content %}
+        <form id="build-case" action="/delete?caseID={{caseNum}}" method="post">
+            <a class="btn btn-default" href="/case?caseID={{caseNum}}" role="button" style="margin-top: 10px; height: 40px;">Go Back</a>
+            <input type="submit" value="Delete Case" />
+        </form>
+
+{% endblock %}
+

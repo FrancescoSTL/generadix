@@ -286,6 +286,94 @@ router.get("/edit", function(request,response){
 
 });
 
+router.get("/delete", function(request,response){
+	var db = request.db;
+	var collection = db.get('cases');
+	var userCollection = db.get('userInfo');
+	var userName;
+
+	// if the user is logged in
+	if(request.session.UID){
+		// find them
+		userCollection.findOne({'_id': request.session.UID}, function(err, user) {
+			// save their user name
+			userName = user.username;
+
+			// find the case they want to edit
+			collection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
+
+					// if they created the case they want to edit, let them
+					if(chosenCase.userCreated == request.session.UID)
+					{
+						response.render('delete.html', {
+									caseName: chosenCase.title, 
+									caseNum: chosenCase._id,
+									userName: userName, 
+									loggedIn: true
+									});
+					}
+					// if not, redirect them to the homepage (for now). In the future we should redirect to an improper permissions page
+					else
+					{
+						response.redirect(301, "/");
+					}
+				
+			});
+		});	
+	}
+	// if the user is not logged in, send them back to the case page
+	else
+	{
+		response.redirect(301, "/case?caseID="+request.query.caseID);
+	}
+
+});
+
+router.post("/delete", function(request,response){
+	var db = request.db;
+	var collection = db.get('cases');
+	var userCollection = db.get('userInfo');
+	var userName;
+
+	// if the user is logged in
+	if(request.session.UID){
+		// find them
+		userCollection.findOne({'_id': request.session.UID}, function(err, user) {
+			// save their user name
+			userName = user.username;
+
+			// find the case they want to delete
+			collection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
+
+					// if they created the case they want to delete, let them
+					if(chosenCase.userCreated == request.session.UID)
+					{
+						// update the entry based upon their request
+						collection.remove({'_id': request.query.caseID}, 
+											function(err, caseI)
+											{
+												response.redirect(301, "/");
+											});
+					}
+					// if the user is not the one who created the case, send them back to the case page (for now). In the future, we will send them to inadquate permissions page
+					else
+					{
+						response.redirect(301, "/case?caseID="+request.query.caseID);
+					}
+
+			});
+		});
+	}
+	// if the user is not logged in, send them back to the case page (for now). In the future, we will send them to inadquate permissions page
+	else
+	{
+		response.redirect(301, "/case?caseID="+request.query.caseID);
+	}
+
+});
+
+
+
 router.post("/edit", function(request,response){
 	var db = request.db;
 	var collection = db.get('cases');
