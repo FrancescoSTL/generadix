@@ -4,6 +4,10 @@
     <link rel="stylesheet" href="/assets/styles/index.css" />
 {% endblock %}
 
+{% block scripts %}
+<script src="/assets/js/register.js"></script>
+{% endblock %}
+
 {% block breadcrumb %}
     <li class="active">Sign Up</li>
 {% endblock %}
@@ -29,7 +33,11 @@
       </div>
       <div style="padding:10px;">
         <label>Password:</label>
-        <input type="password" name="password" />
+        <input type="password" name="password" id="password" />
+      </div>
+      <div style="padding:10px;">
+        <label>Confirm Password:</label>
+        <input type="password" name="cpassword" id="cpassword" />
       </div>
       <div>
         <input type="submit" value="Sign Up" />

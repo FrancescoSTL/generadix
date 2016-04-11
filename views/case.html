@@ -10,19 +10,21 @@
 
 {% block head %}
     <h1>{{ caseName }}</h1>
-    <div class="options" style="margin: 0px 0px 20px 0px;">
-        <div class="col-md-1" style="padding: 5px 0px 20px 0px;">
-            <b>Options:</b>
+    {% if isUserCase %}
+        <div class="options" style="margin: 0px 0px 20px 0px;">
+            <div class="col-md-1" style="padding: 5px 0px 20px 0px;">
+                <b>Options:</b>
+            </div>
+            <div class="col-md-1" style="padding: 5px 0px 20px 0px;">
+                <a href="/edit?caseID={{caseNum}}"><b>Edit</b></a>
+            </div>
+            <div class="col-md-1" style="padding: 5px 0px 20px 0px;">
+                <a href="/delete?caseID={{caseNum}}"><b>Delete</b></a>
+            </div>
         </div>
-        <div class="col-md-1" style="padding: 5px 0px 20px 0px;">
-            <a href="/edit?caseID={{caseNum}}"><b>Edit</b></a>
-        </div>
-        <div class="col-md-1" style="padding: 5px 0px 20px 0px;">
-            <a href="/delete?caseID={{caseNum}}"><b>Delete</b></a>
-        </div>
-    </div>
     <br>
     <br>
+    {% endif %}
     <div style="margin: 10px 0px 0px 0px">
         <legend>Overview</legend>
         <div class="field">

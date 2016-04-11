@@ -23,7 +23,9 @@
                                     <p>{{user.username}}</p>
                                 {% endfor %}
 
-                                <legend>Featured Cases</legend>
+                               <!-- Removing featured cases section until we add the featured case flag
+
+                               <legend>Featured Cases</legend>
                                 <div class="row">
                                     {% for case in featuredCases %}
                                         <a style="display:block; outline: 0" href="{{case.caseURL}}" >
@@ -39,14 +41,17 @@
                                             </div>  
                                         </a>
                                     {% endfor %}
-                                </div>
+                                </div> 
+
+                                -->
+
                                 <legend>Recent Cases</legend>
                                  <div class="row">
                                     {% for case in recentCases %}
                                         <a style="display:block; outline: 0" href="/case?caseID={{case._id}}" >
-                                            <div class="col-md-3" style="height:350px; ">
+                                            <div class="col-md-3" style="height:350px; margin:0px 10px 0px 10px">
                                                 <div class="row" style="height:200px;">
-                                                    <img width="250" height="200" src="http://img.youtube.com/vi/{{case.youtubeURL}}/hqdefault.jpg" >
+                                                    <img width="100%" height="100%" style="max-width: 400px" src="http://img.youtube.com/vi/{{case.youtubeURL}}/hqdefault.jpg" >
                                                 </div>
                                                 <p style="color: black; font-size:25px">{{case.title}}</p>
                                                 <p style="color: black;">{{case.date}}

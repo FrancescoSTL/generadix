@@ -156,6 +156,12 @@ router.get('/case', function(request, response) {
 
 				if((chosenCase.userCreated == request.session.UID) || chosenCase.privacy == "0")
 				{
+					var isUserCreated;
+					if(chosenCase.userCreated == request.session.UID)
+						isUserCreated = true;
+					else
+						isUserCreated = false;
+
 					response.render('case.html', {
 								caseName: chosenCase.title, 
 								caseDescription: chosenCase.description, 
@@ -166,7 +172,8 @@ router.get('/case', function(request, response) {
 								officerName: chosenCase.officerName,
 								caseCity: "Chicago, IL",
 								userName: userName, 
-								loggedIn: true
+								loggedIn: true,
+								isUserCase: isUserCreated
 								});
 				}
 				// if not, they don't have permission to view the case, so redirect them to the homepage (for now). Eventually will redirect to a insufficient permission page
@@ -195,7 +202,8 @@ router.get('/case', function(request, response) {
 								caseDate: chosenCase.date,
 								officerName: chosenCase.officerName,
 								caseCity: "Chicago, IL",
-								loggedIn: false
+								loggedIn: false,
+								isUserCase: false
 								});
 				}
 				// if not, they don't have permission to view the case, so redirect them to the homepage (for now). Eventually will redirect to a insufficient permission page
