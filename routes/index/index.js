@@ -99,7 +99,8 @@ router.post('/upload', function(request, response) {
 									'youtubeURL':youtubeID,
 									'officerName':request.body.officerName,
 									'userCreated':request.session.UID,
-									'privacy':request.body.privacy},
+									'privacy':request.body.privacy,
+									'additionalLink':request.body.addtlLink},
 				function(err, data) {
 
 					response.redirect(301, "/");
@@ -152,7 +153,10 @@ router.get('/case', function(request, response) {
 			var casesCollection = db.get('cases');
 
 			casesCollection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
-				var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
+				if(chosenCase.youtubeURL)
+					var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
+				else
+					youtubeEmbedURL = false;
 
 				if((chosenCase.userCreated == request.session.UID) || chosenCase.privacy == "0")
 				{
@@ -161,6 +165,8 @@ router.get('/case', function(request, response) {
 						isUserCreated = true;
 					else
 						isUserCreated = false;
+
+					console.log(chosenCase.additionalLink);
 
 					response.render('case.html', {
 								caseName: chosenCase.title, 
@@ -173,7 +179,8 @@ router.get('/case', function(request, response) {
 								caseCity: "Chicago, IL",
 								userName: userName, 
 								loggedIn: true,
-								isUserCase: isUserCreated
+								isUserCase: isUserCreated,
+								addtlLink: chosenCase.additionalLink
 								});
 				}
 				// if not, they don't have permission to view the case, so redirect them to the homepage (for now). Eventually will redirect to a insufficient permission page
@@ -189,10 +196,16 @@ router.get('/case', function(request, response) {
 		var casesCollection = db.get('cases');
 
 			casesCollection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
-				var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
+
+				if(chosenCase.youtubeURL)
+					var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
+				else
+					youtubeEmbedURL = false;
 
 				if(chosenCase.privacy == "0")
 				{
+										console.log(chosenCase.additionalLink);
+
 					response.render('case.html', {
 								caseName: chosenCase.title, 
 								caseDescription: chosenCase.description, 
@@ -202,6 +215,7 @@ router.get('/case', function(request, response) {
 								caseDate: chosenCase.date,
 								officerName: chosenCase.officerName,
 								caseCity: "Chicago, IL",
+								addtlLink: chosenCase.additionalLink,
 								loggedIn: false,
 								isUserCase: false
 								});
@@ -274,6 +288,7 @@ router.get("/edit", function(request,response){
 									userName: userName, 
 									privacySelected: chosenCase.privacy,
 									privacySettings: privacySettings,
+									addtlLink: chosenCase.additionalLink,
 									loggedIn: true
 									});
 					}
