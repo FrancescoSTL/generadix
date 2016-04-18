@@ -64,7 +64,7 @@ router.get('/upload', function(request, response) {
 	var collection = db.get('userInfo');
 	var userName;
 
-	if(request.session.UID){
+	/*if(request.session.UID){
 		collection.findOne({'_id': request.session.UID}, function(err, user) {
 			userName = user.username;
 			var projects = [{"name":"Traffic Stop","id":"1"}];
@@ -74,7 +74,8 @@ router.get('/upload', function(request, response) {
 	else
 	{
 		response.redirect(301,'/login');
-	}
+	}*/
+	response.render('upload.html', {title: title, brand: brand});
 });
 
 // requesting upload directory
