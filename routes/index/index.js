@@ -64,7 +64,7 @@ router.get('/upload', function(request, response) {
 	var collection = db.get('userInfo');
 	var userName;
 
-	/*if(request.session.UID){
+	if(request.session.UID){
 		collection.findOne({'_id': request.session.UID}, function(err, user) {
 			userName = user.username;
 			var projects = [{"name":"Traffic Stop","id":"1"}];
@@ -73,9 +73,9 @@ router.get('/upload', function(request, response) {
 	}
 	else
 	{
-		response.redirect(301,'/login');
-	}*/
-	response.render('upload.html', {title: title, brand: brand});
+		response.render('upload.html', {title: title, brand: brand});
+	}
+	
 });
 
 // requesting upload directory
@@ -88,32 +88,48 @@ router.post('/upload', function(request, response) {
 		collection.findOne({'_id': request.session.UID}, function(err, user) {
 			userName = user.username;
 
-			var youtubeURL = request.body.youtubeURL;
-			var length = youtubeURL.length;
-			var endIndex = youtubeURL.indexOf("watch?v=");
-			var youtubeID = youtubeURL.slice((endIndex+8),length);
-
 			var caseCollection = db.get('cases');
-			caseCollection.insert({'title':request.body.caseTitle ,
-									'date':request.body.date,
+			if(request.body.youtubeURL){
+				var youtubeURL = request.body.youtubeURL;
+				var length = youtubeURL.length;
+				var endIndex = youtubeURL.indexOf("watch?v=");
+				var youtubeID = youtubeURL.slice((endIndex+8),length);
+
+				caseCollection.insert({'title':request.body.caseTitle ,
 									'description':request.body.caseDescription, 
 									'youtubeURL':youtubeID,
 									'officerName':request.body.officerName,
 									'userCreated':request.session.UID,
 									'privacy':request.body.privacy,
 									'additionalLink':request.body.addtlLink},
-				function(err, data) {
+					function(err, data) {
 
-					response.redirect(301, "/");
-				}
-			);
+						response.redirect(301, "/");
+					}
+				);
+			}
+			else
+			{
+				caseCollection.insert({'title':request.body.caseTitle ,
+									'description':request.body.caseDescription, 
+									'officerName':request.body.officerName,
+									'userCreated':request.session.UID,
+									'privacy':request.body.privacy,
+									'additionalLink':request.body.addtlLink},
+					function(err, data) {
+
+						response.redirect(301, "/");
+					}
+				);
+			}
+
 
 			
 		});
 	}
 	else
 	{
-		response.render('upload.html', {title: title, brand: brand, userLogged: false});
+		response.render('login.html', {title: title, brand: brand, userLogged: false});
 	}
 });
 
@@ -132,7 +148,8 @@ router.get('/profile', function(request, response) {
 	}
 	else
 	{
-		response.render('profile.html', {title: title, brand: brand, userLogged: false});
+		response.redirect(301, "/login?=post");
+		//response.render('profile.html', {title: title, brand: brand, userLogged: false});
 	}
 });
 
@@ -142,10 +159,9 @@ router.get('/profile', function(request, response) {
 router.get('/case', function(request, response) {
 	var db = request.db;
 	var collection = db.get('userInfo');
-	var latitude = "41.818117";
-	var longitude = "-87.7271817";
 	var userName;
-
+	var latitude =0;
+	var longitude =0;
 
 	if(request.session.UID){
 		collection.findOne({'_id': request.session.UID}, function(err, user) {
@@ -154,41 +170,44 @@ router.get('/case', function(request, response) {
 			var casesCollection = db.get('cases');
 
 			casesCollection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
-				if(chosenCase.youtubeURL)
-					var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
-				else
-					youtubeEmbedURL = false;
 
-				if((chosenCase.userCreated == request.session.UID) || chosenCase.privacy == "0")
-				{
-					var isUserCreated;
-					if(chosenCase.userCreated == request.session.UID)
-						isUserCreated = true;
+				var comments = db.get('comments');
+				comments.find({'caseID': request.query.caseID}, function(err, comments) {
+
+					if(chosenCase.youtubeURL)
+						var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
 					else
-						isUserCreated = false;
+						youtubeEmbedURL = false;
 
-					console.log(chosenCase.additionalLink);
+					if((chosenCase.userCreated == request.session.UID) || chosenCase.privacy == "0")
+					{
+						var isUserCreated;
+						if(chosenCase.userCreated == request.session.UID)
+							isUserCreated = true;
+						else
+							isUserCreated = false;
 
-					response.render('case.html', {
-								caseName: chosenCase.title, 
-								caseDescription: chosenCase.description, 
-								youtubeURL: youtubeEmbedURL,
-								caseNum: chosenCase._id,
-								mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
-								caseDate: chosenCase.date,
-								officerName: chosenCase.officerName,
-								caseCity: "Chicago, IL",
-								userName: userName, 
-								loggedIn: true,
-								isUserCase: isUserCreated,
-								addtlLink: chosenCase.additionalLink
-								});
-				}
-				// if not, they don't have permission to view the case, so redirect them to the homepage (for now). Eventually will redirect to a insufficient permission page
-				else
-				{
-					response.redirect(301, "/");
-				}
+						response.render('case.html', {
+									caseName: chosenCase.title, 
+									caseDescription: chosenCase.description, 
+									youtubeURL: youtubeEmbedURL,
+									caseNum: chosenCase._id,
+									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
+									officerName: chosenCase.officerName,
+									caseCity: "Chicago, IL",
+									userName: userName, 
+									loggedIn: true,
+									isUserCase: isUserCreated,
+									addtlLink: chosenCase.additionalLink,
+									userComments: comments
+									});
+					}
+					// if not, they don't have permission to view the case, so redirect them to the homepage (for now). Eventually will redirect to a insufficient permission page
+					else
+					{
+						response.redirect(301, "/");
+					}
+				});
 			});
 		});
 	}
@@ -198,35 +217,75 @@ router.get('/case', function(request, response) {
 
 			casesCollection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
 
-				if(chosenCase.youtubeURL)
-					var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
-				else
-					youtubeEmbedURL = false;
+				var comments = db.get('comments');
+				comments.find({'caseID': request.query.caseID}, function(err, comments) {
 
-				if(chosenCase.privacy == "0")
-				{
-										console.log(chosenCase.additionalLink);
+					if(chosenCase.youtubeURL)
+						var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
+					else
+						youtubeEmbedURL = false;
 
-					response.render('case.html', {
-								caseName: chosenCase.title, 
-								caseDescription: chosenCase.description, 
-								youtubeURL: youtubeEmbedURL,
-								caseNum: chosenCase._id,
-								mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
-								caseDate: chosenCase.date,
-								officerName: chosenCase.officerName,
-								caseCity: "Chicago, IL",
-								addtlLink: chosenCase.additionalLink,
-								loggedIn: false,
-								isUserCase: false
-								});
-				}
-				// if not, they don't have permission to view the case, so redirect them to the homepage (for now). Eventually will redirect to a insufficient permission page
-				else
-				{
-					response.redirect(301, "/");
-				}
+					if(chosenCase.privacy == "0")
+					{
+
+						response.render('case.html', {
+									caseName: chosenCase.title, 
+									caseDescription: chosenCase.description, 
+									youtubeURL: youtubeEmbedURL,
+									caseNum: chosenCase._id,
+									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
+									officerName: chosenCase.officerName,
+									caseCity: "Chicago, IL",
+									addtlLink: chosenCase.additionalLink,
+									loggedIn: false,
+									isUserCase: false,
+									userComments: comments
+									});
+					}
+					// if not, they don't have permission to view the case, so redirect them to the homepage (for now). Eventually will redirect to a insufficient permission page
+					else
+					{
+						response.redirect(301, "/");
+					}
+				});
 			});
+	}
+});
+
+router.post('/case', function(request, response) {
+	var db = request.db;
+	var collection = db.get('userInfo');
+
+		// if the user is in a logged-in session
+	if(request.session.UID){
+			// find that user
+		collection.findOne({'_id': request.session.UID}, function(err, user) {
+
+				// get all cases
+			var casesCollection = db.get('cases');
+
+				// find the case we want to comment on
+			casesCollection.findOne({'_id': request.body.caseID}, function(err, chosenCase) {
+
+				// get all comments
+			var comments = db.get('comments');
+
+			var comments = db.get('comments');
+			comments.insert({'caseID':request.body.caseID,
+							'comment':request.body.comment,
+							'userID':request.session.UID,
+							'userName':user.username
+							},
+					function(err, data) {
+						response.redirect(301, "/case?caseID="+request.body.caseID);
+					}
+				);
+			});
+		});
+	}
+	else
+	{
+		response.redirect(301, "/login/");
 	}
 });
 
@@ -284,7 +343,6 @@ router.get("/edit", function(request,response){
 									caseDescription: chosenCase.description, 
 									youtubeURL: chosenCase.youtubeURL,
 									caseNum: chosenCase._id,
-									caseDate: chosenCase.date,
 									officerName: chosenCase.officerName,
 									userName: userName, 
 									privacySelected: chosenCase.privacy,
@@ -417,20 +475,23 @@ router.post("/edit", function(request,response){
 					// if they created the case they want to edit, let them
 					if(chosenCase.userCreated == request.session.UID)
 					{
-						var youtubeURL = request.body.youtubeURL;
-						var length = youtubeURL.length;
-						var endIndex = youtubeURL.indexOf("watch?v=");
-						var youtubeID = youtubeURL.slice((endIndex+8),length);
+						if(request.body.youtubeURL)
+						{
+							var youtubeURL = request.body.youtubeURL;
+							var length = youtubeURL.length;
+							var endIndex = youtubeURL.indexOf("watch?v=");
+							var youtubeID = youtubeURL.slice((endIndex+8),length);
+						}
 
 						// update the entry based upon their request
 						collection.update({'_id': request.query.caseID}, {
 											'title':request.body.caseTitle,
-											'date':request.body.date,
 											'description':request.body.caseDescription, 
 											'youtubeURL':youtubeID,
 											'officerName':request.body.officerName,
 											'userCreated':request.session.UID,
-											'privacy':request.body.privacy}, 
+											'privacy':request.body.privacy, 
+											'additionalLink':request.body.addtlLink},
 											function(err, caseI)
 											{
 												response.redirect(301, "/case?caseID="+request.query.caseID);
@@ -458,23 +519,18 @@ router.get('/loginFailure', function(request,response){
 	response.render('loginFailure.html', {title: title, brand: brand, loggedIn: false});
 });
 
-router.get('/logout', function(request,response){
+/*router.get('/logout', function(request,response){
 	response.render('logout.html', {title: title, brand: brand, loggedIn: false});
-});
+});*/
 
 router.get('/register', function(request,response){
 	response.render('register.html', {title: title, brand: brand, loggedIn: false});
 });
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// CHANGE THE ROUTE BELOW SO THAT WHEN PEOPLE LOG OUT, THEY GO TO LOGOUT.HTML PLEASE
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/logout', function(request,response){
 	response.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
 	request.session.destroy(function (err) {
-		response.render(301, '/logout');
+		response.render('logout.html', {title: title, brand: brand, loggedIn: false});
 	});
 });
 

@@ -42,32 +42,36 @@
 
                             <div class="field">
                                 <div>
-                                    <p>Date:</p>
-                                </div>
-                                 <input required id="date" type="date" name="date" value="{{caseDate}}">
-                                </input>
-                            </div>
-
-                            <div class="field">
-                                <div>
                                     <p>Description:</p>
                                 </div>
-                                <textarea required name="caseDescription" rows="3" cols="150">{{ caseDescription }}</textarea>
+                                <textarea name="caseDescription" rows="3" cols="150">{{ caseDescription }}</textarea>
                             </div>
 
                             <div class="field">
                                 <div>
                                     <p>Youtube URL:</p>
                                 </div>
-                                <input required type="url" style="width:50%;" name="youtubeURL" value="https://youtube.com/watch?v={{youtubeURL}}">
+                                {% if youtubeURL %}
+                                    <input type="url" style="width:50%;" name="youtubeURL" value="https://youtube.com/watch?v={{youtubeURL}}">
+                                {% else %}
+                                    <input type="url" style="width:50%;" name="youtubeURL">
+                                {% endif %}
                                 </input>
                             </div>
 
                             <div class="field">
                                 <div>
-                                    <p>Officer Name:</p>
+                                    <p>Other Link:</p>
                                 </div>
-                                <input required style="width:50%;" name="officerName" type="text" value="{{officerName}}">
+                                <input style="width:50%;" name="addtlLink" type="text" value="{{addtlLink}}">
+                                </input>
+                            </div>
+
+                            <div class="field">
+                                <div>
+                                    <p>Tags:</p>
+                                </div>
+                                <input style="width:50%;" name="officerName" type="text" value="{{officerName}}">
                                 </input>
                             </div>
                         </div>
@@ -75,17 +79,5 @@
 
             <input type="submit" value="Save" />
         </form>
-
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-
-  <script>
-    $(function() {
-    $( "#date" ).datepicker();
-  });
-    </script>
-
 {% endblock %}
 

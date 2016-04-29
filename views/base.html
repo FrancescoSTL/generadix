@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
     <head>
+        <script src="/lib/jquery/dist/jquery.min.js"></script>
         <meta charset="utf-8" />
         {% if title %}
             <title>{{ title }} | {{ brand }}</title>
@@ -53,7 +54,6 @@
         </main>
 
         {% block scripts %}{% endblock %}
-        <script src="/lib/jquery/dist/jquery.min.js"></script>
         <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="/assets/js/bootstrap.js"></script>
     </body>

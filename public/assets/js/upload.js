@@ -69,7 +69,3 @@ $(prevBtn).click(function() {
 			break;
 	}
 });
-
-/*$(function() {
-	$("#date").datepicker();
-});*/
