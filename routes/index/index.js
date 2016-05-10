@@ -133,7 +133,9 @@ router.post('/upload', function(request, response) {
 									'officerName':request.body.officerName,
 									'userCreated':request.session.UID,
 									'privacy':request.body.privacy,
-									'additionalLink':request.body.addtlLink},
+									'additionalLink':request.body.addtlLink,
+									'userName': userName,
+									'createdDate': today},
 					function(err, data) {
 
 						response.redirect(301, "/");
