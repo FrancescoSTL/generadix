@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block head %}
-    <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> Welcome to FedUp</h1>
+    <h1><b>Welcome to FedUp</b></h1>
     <p>Start discovering below by selecting one of the cases.</p> 
 {% endblock %}
 
@@ -22,47 +22,19 @@
                                 {% for user in userlist %}
                                     <p>{{user.username}}</p>
                                 {% endfor %}
-
-                               <!-- Removing featured cases section until we add the featured case flag
-
-                               <legend>Featured Cases</legend>
-                                <div class="row">
-                                    {% for case in featuredCases %}
-                                        <a style="display:block; outline: 0" href="{{case.caseURL}}" >
-                                            <div class="col-md-3" style="height:350px; ">
-                                                <div class="row" style="height:200px;">
-                                                    <img width="250" height="200" src="{{case.caseImgURL}}" >
-                                                </div>
-                                                <div class="row" style="height:100px;">
-                                                    <p style="color: black; font-size:25px">{{case.caseName}}</p>
-                                                    <p style="color: black;">{{case.caseShortDescription}}
-                                                    <br>{{case.caseCity}}</p>
-                                                </div>
-                                            </div>  
-                                        </a>
-                                    {% endfor %}
-                                </div> 
-
-                                -->
-
                                 <legend>Recent Cases</legend>
                                  <div class="row">
                                     {% for case in recentCases %}
                                         <a style="display:block; outline: 0" href="/case?caseID={{case._id}}" >
-                                            <div class="col-md-3" style="height:350px; margin:0px 10px 10px 10px">
+                                            <div class="col-md-3" style="height:320px; margin:0px 10px 10px 10px">
                                                 <div class="row" style="height:200px;">
                                                     {% if case.youtubeURL %}
                                                         <img width="100%" height="100%" style="max-width: 400px" src="http://img.youtube.com/vi/{{case.youtubeURL}}/hqdefault.jpg" >
                                                     {% else %}
-                                                        {% if case.additionalLink %}
-                                                            <img width="100%" height="100%" style="max-width: 400px" src="https://cdn1.iconfinder.com/data/icons/communications-network/24/Newspaper-2-512.png" >
-                                                        {% else %}
-                                                            <img width="100%" height="100%" style="max-width: 400px" src="https://cdn3.iconfinder.com/data/icons/business-world-icon-set/434/document-simple-black-icon-512.png" >
-                                                        {% endif %}
+                                                        <img width="100%" height="100%" style="max-width: 400px" src="https://cdn3.iconfinder.com/data/icons/business-world-icon-set/434/document-simple-black-icon-512.png" >
                                                     {% endif %}
                                                 </div>
                                                 <p style="color: black; font-size:25px">{{case.title}}</p>
-                                                <br>{{case.officerName}}</p>
                                             </div>  
                                         </a>
                                     {% endfor %}

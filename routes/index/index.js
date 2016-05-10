@@ -8,6 +8,22 @@ var stepPage = 0;
 var title= "FedUp";
 var brand= "Empowering Citizens in Police Interactions";
 
+// get today's date
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+
+if(dd<10) {
+    dd='0'+dd
+} 
+
+if(mm<10) {
+    mm='0'+mm
+} 
+
+today = mm+'/'+dd+'/'+yyyy;
+
 // requesting root directory
 router.get('/', function(request, response) {
 	var db = request.db;
@@ -101,7 +117,9 @@ router.post('/upload', function(request, response) {
 									'officerName':request.body.officerName,
 									'userCreated':request.session.UID,
 									'privacy':request.body.privacy,
-									'additionalLink':request.body.addtlLink},
+									'additionalLink':request.body.addtlLink,
+									'userName': userName,
+									'createdDate': today},
 					function(err, data) {
 
 						response.redirect(301, "/");
@@ -195,10 +213,11 @@ router.get('/case', function(request, response) {
 									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
 									officerName: chosenCase.officerName,
 									caseCity: "Chicago, IL",
-									userName: userName, 
+									userName: chosenCase.userName, 
 									loggedIn: true,
 									isUserCase: isUserCreated,
 									addtlLink: chosenCase.additionalLink,
+									createdDate: chosenCase.createdDate,
 									userComments: comments
 									});
 					}
@@ -239,6 +258,8 @@ router.get('/case', function(request, response) {
 									addtlLink: chosenCase.additionalLink,
 									loggedIn: false,
 									isUserCase: false,
+									userName: chosenCase.userName,
+									createdDate: chosenCase.createdDate,
 									userComments: comments
 									});
 					}
@@ -344,10 +365,11 @@ router.get("/edit", function(request,response){
 									youtubeURL: chosenCase.youtubeURL,
 									caseNum: chosenCase._id,
 									officerName: chosenCase.officerName,
-									userName: userName, 
 									privacySelected: chosenCase.privacy,
 									privacySettings: privacySettings,
 									addtlLink: chosenCase.additionalLink,
+									createdDate: chosenCase.createdDate,
+									userName: chosenCase.userName,
 									loggedIn: true
 									});
 					}
@@ -491,7 +513,9 @@ router.post("/edit", function(request,response){
 											'officerName':request.body.officerName,
 											'userCreated':request.session.UID,
 											'privacy':request.body.privacy, 
-											'additionalLink':request.body.addtlLink},
+											'additionalLink':request.body.addtlLink,
+											'userName': request.body.userName,
+											'createdDate': request.body.createdDate},
 											function(err, caseI)
 											{
 												response.redirect(301, "/case?caseID="+request.query.caseID);

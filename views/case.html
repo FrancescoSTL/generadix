@@ -9,7 +9,8 @@
 {% endblock %}
 
 {% block head %}
-    <h1>{{ caseName }}</h1>
+    <h1><b>{{ caseName }}</b></h1>
+    <b><p>Posted by {{ userName }} on {{ createdDate }}</p></b>
     {% if isUserCase %}
         <div class="options" style="margin: 0px 0px 20px 0px;">
             <div class="col-md-1" style="padding: 5px 0px 20px 0px;">
@@ -28,7 +29,6 @@
     <div style="margin: 10px 0px 0px 0px">
         <legend>Overview</legend>
         <div class="field">
-            <p><b>Officer: {{officerName}}</b></p>
             <p>{{ caseDescription }}</p>
         </div>
     </div>
@@ -37,7 +37,6 @@
 {% block content %}
         <form id="build-funnelcake" action="/expDetails/" method="get">
                 <div id="caseContain">
-                    <fieldset id="background">
                         <legend>Evidence</legend>
                         <div class="field">
                             {% if youtubeURL %}
@@ -61,15 +60,19 @@
                             <!-- twitter share button 
                             <a href="https://twitter.com/share" class="twitter-share-button"{count} data-text="Check out my case on #FedUp">Tweet</a>
                         </div>-->
-                    </fieldset>
                 </div>
         </form>
         <form id="build-funnelcake" action="/case/" method="post">
             <h3>Comments:</h3>
+            <fieldset id="background">
             {% for comment in userComments %}
-                <p ><b>{{ comment.userName }}</b>: {{ comment.comment }}</p>
+                <div class="comment" style="padding:10px" id="{{comment._id}}">
+                    <p><b onclick="reply('{{comment._id}}')" class="underline-on-hover">{{ comment.userName }}</b>
+                    No. <a onclick="reply('{{comment._id}}')">{{comment._id}}</a>: <br>{{ comment.comment }}</p>
+                </div>
             {% endfor %}
-            <textarea rows="6" cols="70" name="comment"></textarea>
+        </fieldset>
+        <textarea rows="6" cols="70" id="comment" name="comment"></textarea>
             <br>
             <button>Post</submit>
 
@@ -77,6 +80,16 @@
         </form>
 
     <script>
+        function reply(id){
+            commentToReply = document.getElementById(id);
+
+            commentToReply.style.backgroundColor = '#F0F0F0';
+            element = document.getElementById("comment");
+            var replyText = element.value + ">>" + id + " ";
+            element.value = replyText;
+            element.focus();
+        }
+
         //twitter share script
         !function(d,s,id){
             var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
