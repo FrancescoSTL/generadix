@@ -26,23 +26,36 @@
                 </div>
                 <div class="field">
                     <p>Identify as:</p>
-                    <select name="serviceCategory">
-                        <option value="0">LGBTQ</option>
-                        <option value="1">Disabiled/ Disabled Dependent</option>
-                        <option value="2">Military Veteran</option>
-                    </select>
+                    
+                    <label class="radio-inline">
+                      <input type="radio" name="serviceCategory" id="inlineRadio1" value="0"> LGBTQ
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="serviceCategory" id="inlineRadio2" value="1">Disabiled/ Disabled Dependent
+                    </label>
+                    <label class="radio-inline">
+                      <input type="radio" name="serviceCategory" id="inlineRadio3" value="2"> Military Veteran
+                    </label>
+
                 </div>
                 <div class="field">
                     <p>Seeking:</p>
-                    <select name="peopleCategory">
-                        <option value="0">Bed</option>
-                        <option value="1">Food</option>
-                        <option value="2">Job</option>
-                    </select>
+                    
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox1" value="0"> Bed
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox2" value="1"> Food
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="inlineCheckbox3" value="2"> Job
+                    </label>
+
                 </div>
+
                 <div class="field">
                     <p>Describe your situation:</p>
-                    <textarea name="caseDescription" rows="3" cols="150">{{ caseDescription }}</textarea>
+                    <textarea name="caseDescription" rows="3" cols="100">{{ caseDescription }}</textarea>
                 </div>
             </div>
 

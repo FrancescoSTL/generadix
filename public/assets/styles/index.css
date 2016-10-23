@@ -3,13 +3,14 @@ body{
         background-color: aliceblue;
 }
 
-/*
-.container {
-    height: 100%;
+.field > p {
+    font-size: 3rem;
+}
 
-    width: 100%;
-    padding: 0;
-}*/
+#title {
+    font-size: 4rem;
+}
+
 
 form {
     display: inline-block;
