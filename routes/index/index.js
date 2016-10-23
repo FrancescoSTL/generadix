@@ -674,7 +674,12 @@ router.post('/register', function(request,response){
 					response.redirect('loginFailure.html');
 				}
 				request.session.UID = user._id;
-				response.redirect(301, '/accountCreated');
+				if(request.body.rn == "have")
+				{
+					response.redirect(301, '/accountCreated');
+				} else {
+					response.redirect(301, '/upload');
+				}
 			});
 		}
 	);	
