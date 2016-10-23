@@ -116,7 +116,10 @@ router.post('/upload', function(request, response) {
 				caseCollection.insert({'title':request.body.caseTitle ,
 									'description':request.body.caseDescription, 
 									'youtubeURL':youtubeID,
-									'officerName':request.body.officerName,
+									/* 'officerName':request.body.officerName, */
+									'serviceCategory': request.body.serviceCategory,
+									'wantHave': ('wanthave' in request.body ? request.body.wantHave : 'want'),
+									'peopleCategory': request.body.peopleCategory,
 									'userCreated':request.session.UID,
 									'privacy':request.body.privacy,
 									'additionalLink':request.body.addtlLink,
@@ -132,7 +135,10 @@ router.post('/upload', function(request, response) {
 			{
 				caseCollection.insert({'title':request.body.caseTitle ,
 									'description':request.body.caseDescription, 
-									'officerName':request.body.officerName,
+									/* 'officerName':request.body.officerName, */
+									'serviceCategory': request.body.serviceCategory,
+									'wantHave': ('wanthave' in request.body ? request.body.wantHave : 'want')
+									'peopleCategory': request.body.peopleCategory,
 									'userCreated':request.session.UID,
 									'privacy':request.body.privacy,
 									'additionalLink':request.body.addtlLink,
@@ -215,7 +221,10 @@ router.get('/case', function(request, response) {
 									youtubeURL: youtubeEmbedURL,
 									caseNum: chosenCase._id,
 									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
-									officerName: chosenCase.officerName,
+									/* 'officerName':request.body.officerName, */
+									serviceCategory: choseCase.serviceCategory,
+									wantHave: chosenCase.wantHave,
+									peopleCategory: chosenCase.peopleCategory,
 									caseCity: "Chicago, IL",
 									userName: chosenCase.userName, 
 									loggedIn: true,
@@ -257,7 +266,10 @@ router.get('/case', function(request, response) {
 									youtubeURL: youtubeEmbedURL,
 									caseNum: chosenCase._id,
 									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
-									officerName: chosenCase.officerName,
+									/* 'officerName':request.body.officerName, */
+									serviceCategory: choseCase.serviceCategory,
+									wantHave: chosenCase.wantHave,
+									peopleCategory: chosenCase.peopleCategory,
 									caseCity: "Chicago, IL",
 									addtlLink: chosenCase.additionalLink,
 									loggedIn: false,
@@ -368,7 +380,10 @@ router.get("/edit", function(request,response){
 									caseDescription: chosenCase.description, 
 									youtubeURL: chosenCase.youtubeURL,
 									caseNum: chosenCase._id,
-									officerName: chosenCase.officerName,
+									/* 'officerName':request.body.officerName, */
+									serviceCategory: choseCase.serviceCategory,
+									wantHave: chosenCase.wantHave,
+									peopleCategory: chosenCase.peopleCategory,
 									privacySelected: chosenCase.privacy,
 									privacySettings: privacySettings,
 									addtlLink: chosenCase.additionalLink,
@@ -514,7 +529,10 @@ router.post("/edit", function(request,response){
 											'title':request.body.caseTitle,
 											'description':request.body.caseDescription, 
 											'youtubeURL':youtubeID,
-											'officerName':request.body.officerName,
+											/* 'officerName':request.body.officerName, */
+											'serviceCategory': request.body.serviceCategory,
+											'wantHave': ('wanthave' in request.body ? request.body.wantHave : 'want'),
+											'peopleCategory': request.body.peopleCategory,
 											'userCreated':request.session.UID,
 											'privacy':request.body.privacy, 
 											'additionalLink':request.body.addtlLink,
