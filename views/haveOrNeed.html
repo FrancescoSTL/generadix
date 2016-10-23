@@ -8,21 +8,36 @@
     <li class="active">Home</li>
 {% endblock %}
 
-{% block head %}
-    <h1><b>Welcome to HaveNeed</b></h1>
-    <p>Some startupy tagline that makes people really emotional.</p> 
-{% endblock %}
-
 {% block content %}
-    <div class="row">
-        <form action="/register">
-            <button class="btn btn-default" style="width: 350px; height: 200px;">HAVE</button>
-            <input type="hidden" name="hn" value="have" />
-        </form>
-        <form action="/register">
-            <button class="btn btn-default btn-lg"  style="width: 350px; height: 200px;">NEED</button>
-            <input type="hidden" name="hn" value="need" />
-        </form>
-    </div>
-{% endblock %}
 
+<div id="main-container">
+    
+
+    <div class="row">
+        <div class="col-md-12 center-block text-center">
+            <img class="img-responsive" src="/assets/images/have_need_large.png"/>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+            <form action="/register">
+                <button class="btn btn-default" style="width: 200px; height: 100px;">HAVE<br><h1>💛</h1></button>
+                <input type="hidden" name="hn" value="have" />
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form action="/register">
+                <button class="btn btn-default btn-lg"  style="width: 200px; height: 100px;">NEED<br><h1>🏡</h1></button>
+                <input type="hidden" name="hn" value="need" />
+            </form>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+{% endblock %}

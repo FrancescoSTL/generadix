@@ -1,3 +1,29 @@
+body{
+    height: 100vh;
+        background-color: aliceblue;
+}
+
+/*
+.container {
+    height: 100%;
+   
+    width: 100%;
+    padding: 0;
+}*/
+
+form {
+    display: inline-block;
+}
+
+#main-container {
+
+    text-align: center;
+}
+
+nav {
+    margin-bottom: 0 !important;
+}
+
 fieldset {
     padding: 0 10px;
     margin: 0 0 15px;

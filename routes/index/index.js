@@ -622,8 +622,9 @@ router.get('/loginFailure', function(request,response){
 });*/
 
 router.get('/register', function(request,response){
-	if (request.body.hn) {
-		response.render('register.html', {title: title, brand: brand, loggedIn: false, hn: request.body.hn});
+	if (request.query.hn) {
+		console.log('passing to register' + request.query.hn);
+		response.render('register.html', {title: title, brand: brand, loggedIn: false, hn: request.query.hn});
 	} else {
 		response.render('register.html', {title: title, brand: brand, loggedIn: false});
 	}
@@ -695,7 +696,13 @@ router.post('/register', function(request,response){
 					response.redirect('loginFailure.html');
 				}
 				request.session.UID = user._id;
-				response.redirect(301, '/accountCreated');
+				if(request.body.hn == "have")
+				{
+					response.redirect(301, '/accountCreated');
+				} else {
+					console.log(request.body.hn);
+					response.redirect(301, '/upload');
+				}
 			});
 		}
 	);	
