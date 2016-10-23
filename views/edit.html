@@ -19,63 +19,34 @@
 
 {% block content %}
         <form id="build-case" action="/edit?caseID={{caseNum}}" method="post">
-                    <fieldset id="background">
-                        <legend>Case Type</legend>
-                        <div class="field">
-                        	<select name="privacy">
-                        		{% for setting in privacySettings %}
-							        <option value="{{setting.id}}" 
-							        {% if (setting.id == privacySelected) %} selected="selected" {% endif %}
-							        >
-							        {{ setting.text }}
-							        </option>
-							    {% endfor %}
+            <div id="titleDiv" >
+                <div class="field">
+                    <p>Title:</p>
+                    <input style="width:50%;" name="caseTitle" type="text" value="{{caseName}}"></input>
+                </div>
+                <div class="field">
+                    <p>Identify as:</p>
+                    <select name="peopleCategory">
+                        <option value="0">LGBTQ</option>
+                        <option value="1">Disabiled/ Disabled Dependent</option>
+                        <option value="2">Military Veteran</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <p>Seeking:</p>
+                    <select name="serviceCategory">
+                        <option value="0">Bed</option>
+                        <option value="1">Food</option>
+                        <option value="2">Job</option>
+                    </select>
+                </div>
 
-	                        </select>
-                            <div class="field">
-                                <div>
-                                    <p>Case Title:</p>
-                                </div>
-                                <input required autofocus required style="width:50%;" name="caseTitle" type="text" value="{{caseName}}">
-                                </input>
-                            </div>
+                <div class="field">
+                    <p>Describe your situation:</p>
+                    <textarea name="caseDescription" rows="3" cols="100">{{ caseDescription }}</textarea>
+                </div>
+            </div>
 
-                            <div class="field">
-                                <div>
-                                    <p>Description:</p>
-                                </div>
-                                <textarea name="caseDescription" rows="3" cols="150">{{ caseDescription }}</textarea>
-                            </div>
-
-                            <div class="field">
-                                <div>
-                                    <p>Youtube URL:</p>
-                                </div>
-                                {% if youtubeURL %}
-                                    <input type="url" style="width:50%;" name="youtubeURL" value="https://youtube.com/watch?v={{youtubeURL}}">
-                                {% else %}
-                                    <input type="url" style="width:50%;" name="youtubeURL">
-                                {% endif %}
-                                </input>
-                            </div>
-
-                            <div class="field">
-                                <div>
-                                    <p>Other Link:</p>
-                                </div>
-                                <input style="width:50%;" name="addtlLink" type="text" value="{{addtlLink}}">
-                                </input>
-                            </div>
-
-                            <div class="field">
-                                <div>
-                                    <p>Tags:</p>
-                                </div>
-                                <input style="width:50%;" name="officerName" type="text" value="{{officerName}}">
-                                </input>
-                            </div>
-                        </div>
-                    </fieldset>
             <input hidden name="userName" type="text" value="{{userName}}"></input>
             <input hidden name="createdDate" type="text" value="{{createdDate}}"></input>
 

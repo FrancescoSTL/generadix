@@ -35,7 +35,7 @@ router.get('/', function(request, response) {
 	if (request.query.cat != "true" && typeof request.query.cat != "undefined") {
 		query = request.query.cat;
 
-		recentCasesCollection.find({"serviceCategory": request.query.cat}, { sort: {$natural: -1 }, limit: 12}, function(err, cases) {
+		recentCasesCollection.find({"peopleCategory": request.query.cat}, { sort: {$natural: -1 }, limit: 12}, function(err, cases) {
 			if(request.session.UID){
 				collection.findOne({'_id': request.session.UID}, function(err, user) {
 					userName = user.username;
@@ -92,14 +92,13 @@ router.post('/upload', function(request, response) {
 	var db = request.db;
 	var collection = db.get('userInfo');
 	var userName;
-    console.log("recd request");
-    console.log(request.session);
 	if(request.session.UID){
-	    console.log("UID ok");
 		collection.findOne({'_id': request.session.UID}, function(err, user) {
 			userName = user.username;
 
 			var caseCollection = db.get('cases');
+
+			console.log(request.body.peopleCategory);
 
 				caseCollection.insert({'title':request.body.caseTitle ,
 									'description':request.body.caseDescription, 
@@ -183,9 +182,6 @@ router.get('/case', function(request, response) {
 						if(chosenCase.claimingUserId) {
 							matched = true;
 						}
-
-						console.log(user.htype == "help" && chosenCase.claimingUserId == request.session.UID  && matched);
-						console.log(user.htype + " " + chosenCase.claimingUserId + " " + request.session.UID + " " + matched);
 
 						if ((user.htype == "need" && matched) || (user.htype == "have" && chosenCase.claimingUserId == request.session.UID  && matched)) {
 							
