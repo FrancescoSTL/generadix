@@ -20,7 +20,7 @@
 {% block content %}
 <html>
   <body>
-    <form action="/register" method="post">
+<!--     <form action="/register" method="post">
       {% if hn %}
         <input type="hidden" name="hn" value="{{hn}}" />
       {% else %}
@@ -51,7 +51,44 @@
       <div>
         <input type="submit" value="Sign Up" />
       </div>
+    </form> -->
+
+
+    <form action="/register" method="post">
+        {% if hn %}
+          <input type="hidden" name="hn" value="{{hn}}" />
+        {% else %}
+          <p>What describes you best?:</p>
+          <select name="hn">
+              <option value="have">Have</option>
+              <option value="need">Need</option>
+          </select>
+        {% endif %}
+
+
+        <div class="form-group">
+          <label for="username">User Name</label>
+          <input type="text" name="username" class="form-control" id="username">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" class="form-control" id="email"> 
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" name="password" class="form-control" id="password">
+        </div>
+
+        <div class="form-group">
+          <label for="cpassword">Confirm Password</label>
+          <input type="password" name="cpassword" class="form-control" id="cpassword">
+        </div>
+       
+        <button type="submit" class="btn btn-default">Submit</button>
     </form>
+
   </body>
 </html>
 {% endblock %}

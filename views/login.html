@@ -16,7 +16,7 @@
 {% block content %}
 <html>
   <body>
-    <form action="/login" method="post">
+<!--     <form action="/login" method="post">
       <div  style="padding:10px;">
         <label>Email:</label>
         <input type="text" name="email" />
@@ -29,7 +29,22 @@
       <div>
         <input type="submit" value="Submit" />
       </div>
+    </form> -->
+
+
+    <form action="/login" method="post">
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email" class="form-control" id="email" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
     </form>
+
+
   </body>
 </html>
 {% endblock %}
