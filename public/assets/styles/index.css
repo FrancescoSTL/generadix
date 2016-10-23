@@ -15,6 +15,10 @@ form {
     display: inline-block;
 }
 
+.skinny-form {
+    width: 100% !important;
+}
+
 #main-container {
 
     text-align: center;

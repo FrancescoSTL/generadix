@@ -15,7 +15,8 @@
 {% block content %}
 <html>
   <body>
-    <form action="/logout" method="post">
+    <form action="/logout" method="post" class="skinny-form">
+       <div class="container"> 
         <div class="row">
             {% for case in userCases %}
             	<a style="display:block; outline: 0" href="/case?caseID={{case._id}}" >
@@ -36,6 +37,7 @@
                     </div>  
                 </a>
             {% endfor %}
+        </div>
         </div>
     </form>
   </body>
