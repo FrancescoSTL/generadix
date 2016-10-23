@@ -94,6 +94,8 @@ router.get('/upload', function(request, response) {
 	
 });
 
+
+
 // requesting upload directory
 router.post('/upload', function(request, response) {
 	var db = request.db;
@@ -558,6 +560,10 @@ router.get('/logout', function(request,response){
 	request.session.destroy(function (err) {
 		response.render('logout.html', {title: title, brand: brand, loggedIn: false});
 	});
+});
+
+router.get('/chat', function(req, res) {
+    res.render('chat.html');
 });
 
 router.get('/myCases', function(request,response){
