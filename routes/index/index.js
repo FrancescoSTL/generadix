@@ -518,7 +518,7 @@ router.post('/match', function (request,response) {
 							needHave: chosenCase.needHave,
 							peopleCategory: chosenCase.peopleCategory,
 							privacySelected: chosenCase.privacy,
-							privacySettings: privacySettings,
+							privacySettings: chosenCase.privacySettings,
 							addtlLink: chosenCase.additionalLink,
 							createdDate: chosenCase.createdDate,
 							claimingUserId: request.session.UID, //for matching have user
