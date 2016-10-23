@@ -24,19 +24,22 @@
                     </div>
                     <div class="nav navbar-nav navbar-right">
                         {% if loggedIn %}
-                            <a class="btn btn-default" href="/upload/" role="button" style="margin-top: 10px; height: 40px;">Upload</a>
-                            <div class="btn-group">
-                              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 10px; height: 40px;">
-                                {{ userName }} <span class="caret"></span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                <!-- Removing profile link until profiles are created <li><a href="/profile">Profile</a></li> -->
-                                <li><a href="/myCases">My Cases</a></li>
-                                <!-- Removing settings link until settings are created <li><a href="/profile">Settings</a></li> -->
-                                <li role="separator" class="divider"></li>
-                                <li><a href="/logout">Log Out</a></li>
-                              </ul>
-                            </div>
+                                {% if hn == "need" %}
+                                <a class="btn btn-default" href="/upload/" role="button" style="margin-top: 10px; height: 40px;">Upload</a>
+                                {% endif %}
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-top: 10px; height: 40px;">
+                                    {{ userName }} <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu">
+                                    <!-- Removing profile link until profiles are created <li><a href="/profile">Profile</a></li> -->
+                                    <li><a href="/myCases">My Cases</a></li>
+                                    <!-- Removing settings link until settings are created <li><a href="/profile">Settings</a></li> -->
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="/logout">Log Out</a></li>
+                                  </ul>
+                                </div>
+
                         {% else %}
                             <a class="btn btn-default" href="/register/" role="button" style="margin-top: 10px; height: 40px;">Sign up</a>
                             <a class="btn btn-default" href="/login/" role="button" style="margin-top: 10px; height: 40px;">Sign in</a>

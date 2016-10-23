@@ -39,7 +39,7 @@ router.get('/', function(request, response) {
 			if(request.session.UID){
 				collection.findOne({'_id': request.session.UID}, function(err, user) {
 					userName = user.username;
-					response.render('index.html', {feature: true, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true, peopleCategory: query});
+					response.render('index.html', {feature: true, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true, peopleCategory: query, hn: user.htype});
 				});
 			}
 			else
@@ -53,7 +53,7 @@ router.get('/', function(request, response) {
 			if(request.session.UID){
 				collection.findOne({'_id': request.session.UID}, function(err, user) {
 					userName = user.username;
-					response.render('index.html', {feature: true, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true, notChosen: query});
+					response.render('index.html', {feature: true, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true, notChosen: query, hn: user.htype});
 				});
 			}
 			else
@@ -75,7 +75,7 @@ router.get('/upload', function(request, response) {
 		collection.findOne({'_id': request.session.UID}, function(err, user) {
 			userName = user.username;
 			var projects = [{"name":"Traffic Stop","id":"1"}];
-			response.render('upload.html', {projects: projects, title: title, brand: brand, userName: userName, loggedIn: true});
+			response.render('upload.html', {projects: projects, title: title, brand: brand, userName: userName, loggedIn: true, hn: user.htype});
 		});
 	}
 	else
@@ -100,36 +100,7 @@ router.post('/upload', function(request, response) {
 			userName = user.username;
 
 			var caseCollection = db.get('cases');
-			if(request.body.youtubeURL){
-				var youtubeURL = request.body.youtubeURL;
-				var length = youtubeURL.length;
-				var endIndex = youtubeURL.indexOf("watch?v=");
-				var youtubeID = youtubeURL.slice((endIndex+8),length);
 
-				caseCollection.insert({'title':request.body.caseTitle ,
-									'description':request.body.caseDescription, 
-									'youtubeURL':youtubeID,
-									/*'officerName':request.body.officerName,*/
-									'serviceCategory': request.body.serviceCategory,
-									'needHave': ('needHave' in request.body ? request.body.needHave : 'need'),
-									'peopleCategory': request.body.peopleCategory,
-									'userCreated':request.session.UID,
-									'privacy': "0",
-									'serviceCategory':request.body.serviceCategory,
-									'peopleCategory': request.body.peopleCategory,
-									'additionalLink':request.body.addtlLink,
-									'userName': userName,
-									'claimingUserId': null, //for matching have user
-									'claimedDate' : null, // matching user date
-									'createdDate': today},
-					function(err, data) {
-                        console.err(err);
-						response.redirect(301, "/");
-					}
-				);
-			}
-			else
-			{
 				caseCollection.insert({'title':request.body.caseTitle ,
 									'description':request.body.caseDescription, 
 									/* 'officerName':request.body.officerName, */
@@ -148,7 +119,6 @@ router.post('/upload', function(request, response) {
 						response.redirect(301, "/");
 					}
 				);
-			}
 		});
 	}
 	else
@@ -199,10 +169,6 @@ router.get('/case', function(request, response) {
 				var comments = db.get('comments');
 				comments.find({'caseID': request.query.caseID}, function(err, comments) {
 
-					if(chosenCase.youtubeURL)
-						var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
-					else
-						youtubeEmbedURL = false;
 
 					if((chosenCase.userCreated == request.session.UID) || chosenCase.privacy == "0")
 					{
@@ -212,10 +178,21 @@ router.get('/case', function(request, response) {
 						else
 							isUserCreated = false;
 
-						response.render('case.html', {
+						var matched = false
+
+						if(chosenCase.claimingUserId) {
+							matched = true;
+						}
+
+						console.log(user.htype == "help" && chosenCase.claimingUserId == request.session.UID  && matched);
+						console.log(user.htype + " " + chosenCase.claimingUserId + " " + request.session.UID + " " + matched);
+
+						if ((user.htype == "need" && matched) || (user.htype == "have" && chosenCase.claimingUserId == request.session.UID  && matched)) {
+							
+							console.log(user.htype == "help" && chosenCase.claimingUserId == request.session.UID  && matched );
+							response.render('case.html', {
 									caseName: chosenCase.title, 
 									caseDescription: chosenCase.description, 
-									youtubeURL: youtubeEmbedURL,
 									caseNum: chosenCase._id,
 									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
 									/* 'officerName':request.body.officerName, */
@@ -231,8 +208,35 @@ router.get('/case', function(request, response) {
 									createdDate: chosenCase.createdDate,
 									claimingUserId: chosenCase.claimingUserId,
 							 		claimedDate: chosenCase.claimedDate,
-									userComments: comments
-									});
+									userComments: comments,
+									hn: user.htype,
+									isMatched: true
+							});
+						} else {
+							response.render('case.html', {
+									caseName: chosenCase.title, 
+									caseDescription: chosenCase.description, 
+									caseNum: chosenCase._id,
+									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
+									/* 'officerName':request.body.officerName, */
+									serviceCategory: chosenCase.serviceCategory,
+									needHave: chosenCase.needHave,
+									peopleCategory: chosenCase.peopleCategory,
+									privacy: 0,
+									caseCity: "Chicago, IL",
+									userName: chosenCase.userName, 
+									loggedIn: true,
+									isUserCase: isUserCreated,
+									addtlLink: chosenCase.additionalLink,
+									createdDate: chosenCase.createdDate,
+									claimingUserId: chosenCase.claimingUserId,
+							 		claimedDate: chosenCase.claimedDate,
+									userComments: comments,
+									hn: user.htype,
+									isMatched: false
+							});
+						}
+						
 					}
 					// if not, they don't have permission to view the case, so redirect them to the homepage (for now). Eventually will redirect to a insufficient permission page
 					else
@@ -252,18 +256,12 @@ router.get('/case', function(request, response) {
 				var comments = db.get('comments');
 				comments.find({'caseID': request.query.caseID}, function(err, comments) {
 
-					if(chosenCase.youtubeURL)
-						var youtubeEmbedURL = "https://www.youtube.com/embed/" + chosenCase.youtubeURL;
-					else
-						youtubeEmbedURL = false;
-
 					if(chosenCase.privacy == "0")
 					{
 
 						response.render('case.html', {
 									caseName: chosenCase.title, 
 									caseDescription: chosenCase.description, 
-									youtubeURL: youtubeEmbedURL,
 									caseNum: chosenCase._id,
 									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
 									/* 'officerName':request.body.officerName, */
@@ -382,7 +380,6 @@ router.get("/edit", function(request,response){
 						response.render('edit.html', {
 									caseName: chosenCase.title,
 									caseDescription: chosenCase.description,
-									youtubeURL: chosenCase.youtubeURL,
 									caseNum: chosenCase._id,
 									/* 'officerName':request.body.officerName, */
 									serviceCategory: chosenCase.serviceCategory,
@@ -395,7 +392,8 @@ router.get("/edit", function(request,response){
 									claimingUserId: chosenCase.claimingUserId, //for matching have user
 									claimedDate : chosenCase.claimedDate, // matching user date
 									userName: chosenCase.userName,
-									loggedIn: true
+									loggedIn: true,
+									hn: user.htype
 									});
 					}
 					// if not, redirect them to the homepage (for now). In the future we should redirect to an improper permissions page
@@ -438,7 +436,8 @@ router.get("/delete", function(request,response){
 									caseName: chosenCase.title, 
 									caseNum: chosenCase._id,
 									userName: userName, 
-									loggedIn: true
+									loggedIn: true,
+									hn: user.htype
 									});
 					}
 					// if not, redirect them to the homepage (for now). In the future we should redirect to an improper permissions page
@@ -502,7 +501,7 @@ router.post("/delete", function(request,response){
 });
 
 
-router.post('/match', function (request,response) {
+router.get('/match', function (request,response) {
 	var db = request.db;
 	var collection = db.get('cases');
 	var userCollection = db.get('userInfo');
@@ -518,25 +517,14 @@ router.post('/match', function (request,response) {
 			collection.findOne({'_id': new mongo.ObjectID(request.query.caseID)}, function(err, chosenCase) {
                 if(err){return response.status(500).send(err.toString());}
 				// if they created the case they want to edit, let them
-				if(chosenCase.claimingUserId == null)
+				if(request.session.UID != null)
 				{
-					if(request.body.youtubeURL)
-					{
-						var youtubeURL = request.body.youtubeURL;
-						var length = youtubeURL.length;
-						var endIndex = youtubeURL.indexOf("watch?v=");
-						var youtubeID = youtubeURL.slice((endIndex+8),length);
-					}
 
 					// update the entry based upon their request
 					collection.update({'_id': chosenCase._id}, {
-							caseName: chosenCase.title,
-							caseDescription: chosenCase.description,
-							youtubeURL: chosenCase.youtubeURL,
-							caseNum: chosenCase._id,
-							/* 'officerName':request.body.officerName, */
+							title: chosenCase.title,
+							description: chosenCase.description,
 							serviceCategory: chosenCase.serviceCategory,
-							needHave: chosenCase.needHave,
 							peopleCategory: chosenCase.peopleCategory,
 							privacy: 0,
 							addtlLink: chosenCase.additionalLink,
@@ -544,8 +532,6 @@ router.post('/match', function (request,response) {
 							claimingUserId: request.session.UID, //for matching have user
 							claimedDate : today, // matching user date
 							userName: chosenCase.userName,
-							loggedIn: true
-
 						},
 						function(err, caseI)
 						{
@@ -588,19 +574,11 @@ router.post("/edit", function(request,response){
 					// if they created the case they want to edit, let them
 					if(chosenCase.userCreated == request.session.UID)
 					{
-						if(request.body.youtubeURL)
-						{
-							var youtubeURL = request.body.youtubeURL;
-							var length = youtubeURL.length;
-							var endIndex = youtubeURL.indexOf("watch?v=");
-							var youtubeID = youtubeURL.slice((endIndex+8),length);
-						}
 
 						// update the entry based upon their request
 						collection.update({'_id': request.query.caseID}, {
 											'title':request.body.caseTitle,
 											'description':request.body.caseDescription, 
-											'youtubeURL':youtubeID,
 											/* 'officerName':request.body.officerName, */
 											'serviceCategory': request.body.serviceCategory,
 											'needHave': ('needHave' in request.body ? request.body.needHave : 'want'),
@@ -672,7 +650,7 @@ router.get('/myCases', function(request,response){
 			userName = user.username;
 
 			casesCollection.find({ userCreated: request.session.UID }, function(err, cases) {
-				response.render('myCases.html', {title: title, brand: brand, loggedIn: true, userName: userName, userCases: cases});
+				response.render('myCases.html', {title: title, brand: brand, loggedIn: true, userName: userName, userCases: cases, hn: user.htype});
 			});
 		});
 	}
@@ -694,7 +672,7 @@ router.get('/accountCreated', function(request,response){
 		collection.findOne({'_id': request.session.UID}, function(err, user) {
 			var userName = user.username;
 
-			response.render('accountCreated.html', {title: title, brand: brand, userName: userName, loggedIn: true});
+			response.render('accountCreated.html', {title: title, brand: brand, userName: userName, loggedIn: true, hn: user.htype});
 		});
 	}
 });
@@ -703,8 +681,9 @@ router.get('/accountCreated', function(request,response){
 router.post('/register', function(request,response){
 	var db = request.db;
 	var collection = db.get('userInfo');
+	var hn;
 
-	collection.insert({'username':request.body.username ,'password':request.body.password,'email':request.body.email},
+	collection.insert({'username':request.body.username ,'password':request.body.password,'email':request.body.email,'htype':request.body.hn},
 		function(err, user) {
 			if(err)
 			{

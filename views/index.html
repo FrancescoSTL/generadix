@@ -63,7 +63,15 @@
                                                     <p style="color: black; font-size:21px">{{case.title}}</p>
                                                 </div>
                                                 <div style="height:30px;">
-                                                    <b><p>Posted by {{ case.userName }} on {{ case.createdDate }}</p></b>
+                                                    {% if case.serviceCategory == "0" %}
+                                                        <b><p>Seeking a bed on {{ case.createdDate }}</p></b>
+                                                    {% endif %}
+                                                    {% if case.serviceCategory == "1" %}
+                                                        <b><p>Seeking food on {{ case.createdDate }}</p></b>
+                                                    {% endif %}
+                                                    {% if case.serviceCategory == "2" %}
+                                                        <b><p>Seeking employment on {{ case.createdDate }}</p></b>
+                                                    {% endif %}
                                                 </div>
                                             </div>  
                                         </a>

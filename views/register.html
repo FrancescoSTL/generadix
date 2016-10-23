@@ -21,7 +21,14 @@
 <html>
   <body>
     <form action="/register" method="post">
-      <input type="hidden" name="hn" value="{{hn}}" />
+      {% if hn %}
+        <input type="hidden" name="hn" value="{{hn}}" />
+      {% else %}
+        <select name="hn">
+            <option value="have">Have</option>
+            <option value="need">Need</option>
+        </select>
+      {% endif %}
       <div  style="padding:10px;">
         <label>Name:</label>
         <input type="text" name="username" />
