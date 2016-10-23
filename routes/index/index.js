@@ -30,19 +30,39 @@ router.get('/', function(request, response) {
 	var collection = db.get('userInfo');
 	var recentCasesCollection = db.get('cases');
 	var userName;
+	var query = "true";
 
-	recentCasesCollection.find({"privacy": "0"}, { sort: {$natural: -1 }, limit: 12}, function(err, cases) {
-		if(request.session.UID){
-			collection.findOne({'_id': request.session.UID}, function(err, user) {
-				userName = user.username;
-				response.render('index.html', {feature: true, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true});
-			});
-		}
-		else
-		{
-			response.render('haveOrNeed.html');
-		}
-	});
+	if (request.query.cat != "true" && typeof request.query.cat != "undefined") {
+		query = request.query.cat;
+
+		recentCasesCollection.find({"serviceCategory": request.query.cat}, { sort: {$natural: -1 }, limit: 12}, function(err, cases) {
+			if(request.session.UID){
+				collection.findOne({'_id': request.session.UID}, function(err, user) {
+					userName = user.username;
+					response.render('index.html', {feature: true, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true, peopleCategory: query});
+				});
+			}
+			else
+			{
+				response.render('haveOrNeed.html');
+			}
+		});
+	}
+	else {
+		recentCasesCollection.find({"privacy": "0"}, { sort: {$natural: -1 }, limit: 12}, function(err, cases) {
+			if(request.session.UID){
+				collection.findOne({'_id': request.session.UID}, function(err, user) {
+					userName = user.username;
+					response.render('index.html', {feature: true, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true, notChosen: query});
+				});
+			}
+			else
+			{
+				response.render('haveOrNeed.html');
+			}
+		});
+	}
+	
 });
 
 // requesting upload directory
