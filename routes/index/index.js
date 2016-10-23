@@ -94,7 +94,9 @@ router.post('/upload', function(request, response) {
 									'needHave': ('needHave' in request.body ? request.body.needHave : 'need'),
 									'peopleCategory': request.body.peopleCategory,
 									'userCreated':request.session.UID,
-									'privacy':request.body.privacy,
+									'privacy': "0",
+									'serviceCategory':request.body.serviceCategory,
+									'peopleCategory': request.body.peopleCategory,
 									'additionalLink':request.body.addtlLink,
 									'userName': userName,
 									'claimingUserId': null, //for matching have user
@@ -115,7 +117,7 @@ router.post('/upload', function(request, response) {
 									'needHave': ('needHave' in request.body ? request.body.needHave : 'need'),
 									'peopleCategory': request.body.peopleCategory,
 									'userCreated':request.session.UID,
-									'privacy':request.body.privacy,
+									'privacy': "0",
 									'additionalLink':request.body.addtlLink,
 									'userName': userName,
 									'claimingUserId': null, //for matching have user
@@ -127,9 +129,6 @@ router.post('/upload', function(request, response) {
 					}
 				);
 			}
-
-
-			
 		});
 	}
 	else
@@ -203,6 +202,7 @@ router.get('/case', function(request, response) {
 									serviceCategory: chosenCase.serviceCategory,
 									needHave: chosenCase.needHave,
 									peopleCategory: chosenCase.peopleCategory,
+									privacy: 0,
 									caseCity: "Chicago, IL",
 									userName: chosenCase.userName, 
 									loggedIn: true,
@@ -252,6 +252,7 @@ router.get('/case', function(request, response) {
 									peopleCategory: chosenCase.peopleCategory,
 									caseCity: "Chicago, IL",
 									addtlLink: chosenCase.additionalLink,
+									privacy: 0,
 									loggedIn: false,
 									isUserCase: false,
 									userName: chosenCase.userName,
@@ -517,8 +518,7 @@ router.post('/match', function (request,response) {
 							serviceCategory: chosenCase.serviceCategory,
 							needHave: chosenCase.needHave,
 							peopleCategory: chosenCase.peopleCategory,
-							privacySelected: chosenCase.privacy,
-							privacySettings: chosenCase.privacySettings,
+							privacy: 0,
 							addtlLink: chosenCase.additionalLink,
 							createdDate: chosenCase.createdDate,
 							claimingUserId: request.session.UID, //for matching have user
@@ -586,7 +586,7 @@ router.post("/edit", function(request,response){
 											'needHave': ('needHave' in request.body ? request.body.needHave : 'want'),
 											'peopleCategory': request.body.peopleCategory,
 											'userCreated':request.session.UID,
-											'privacy':request.body.privacy, 
+											'privacy':0, 
 											'additionalLink':request.body.addtlLink,
 											'userName': request.body.userName,
 											'createdDate': request.body.createdDate},
