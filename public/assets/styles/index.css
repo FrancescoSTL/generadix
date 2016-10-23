@@ -11,6 +11,17 @@ body{
     font-size: 4rem;
 }
 
+.vcenter {
+  position: relative;
+  top: 40%;
+  text-align: center;
+  transform: translateY(-50%);
+}
+
+.vcenter > h4 {
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
 
 form {
     display: inline-block;
@@ -20,10 +31,11 @@ form {
     width: 100% !important;
 }
 
-#main-container {
-
-    text-align: center;
+#base-container {
+    height: 100vh;
 }
+
+
 
 nav {
     margin-bottom: 0 !important;

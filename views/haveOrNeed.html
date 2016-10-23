@@ -10,30 +10,32 @@
 
 {% block content %}
 
-<div id="main-container">
-    <div class="row">
-        <div class="col-md-12 center-block text-center">
-            <img class="img-responsive" src="/assets/images/have_need_large.png"/>
-        </div>
-    </div>
+      <div class="row vcenter">
+       
+       <h4>We're here to help if you're in </h4>
 
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-            <form action="/register">
-                <button class="btn btn-default btn-lg" style="width: 200px; height: 100px;">HAVE<br><h1>💛</h1></button>
-                <input type="hidden" name="hn" value="have" />
-            </form>
+        <div class="row">
+            <div class="col-md-12">
+                <form action="/register">
+                    <button class="btn btn-default btn-lg"  style="width: 200px; height: 100px;">NEED<br></button>
+                    <input type="hidden" name="hn" value="need" />
+                </form>
+            </div>
         </div>
-        <div class="col-md-6">
-            <form action="/register">
-                <button class="btn btn-default btn-lg"  style="width: 200px; height: 100px;">NEED<br><h1>🏡</h1></button>
-                <input type="hidden" name="hn" value="need" />
-            </form>
+
+        <h4>or can connect you with those you are if you're fortunate enough to</h4>
+
+        <div class="row">
+            <div class="col-md-12">
+                <form action="/register">
+                    <button class="btn btn-default btn-lg" style="width: 200px; height: 100px;">HAVE</button>
+                    <input type="hidden" name="hn" value="have" />
+                </form>
+            </div>
         </div>
+
+
+
       </div>
-    </div>
-
-</div>
 
 {% endblock %}
