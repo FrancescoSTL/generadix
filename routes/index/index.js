@@ -529,6 +529,7 @@ router.get('/match', function (request,response) {
 							privacy: 0,
 							addtlLink: chosenCase.additionalLink,
 							createdDate: chosenCase.createdDate,
+							userCreated: chosenCase.userCreated,
 							claimingUserId: request.session.UID, //for matching have user
 							claimedDate : today, // matching user date
 							userName: chosenCase.userName,
@@ -649,9 +650,15 @@ router.get('/myCases', function(request,response){
 		usersCollection.findOne({'_id': request.session.UID}, { sort: { $natural: -1 }, limit: 16}, function(err, user) {
 			userName = user.username;
 
-			casesCollection.find({ userCreated: request.session.UID }, function(err, cases) {
-				response.render('myCases.html', {title: title, brand: brand, loggedIn: true, userName: userName, userCases: cases, hn: user.htype});
-			});
+			if (user.htype == "have") {
+				casesCollection.find({ claimingUserId: request.session.UID }, function(err, cases) {
+					response.render('myCases.html', {title: title, brand: brand, loggedIn: true, userName: userName, userCases: cases, hn: user.htype});
+				});
+			} else {
+				casesCollection.find({ userCreated: request.session.UID }, function(err, cases) {
+					response.render('myCases.html', {title: title, brand: brand, loggedIn: true, userName: userName, userCases: cases, hn: user.htype});
+				});
+			}
 		});
 	}
 	else

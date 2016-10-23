@@ -32,8 +32,11 @@
                                     {{ userName }} <span class="caret"></span>
                                   </button>
                                   <ul class="dropdown-menu">
-                                    <!-- Removing profile link until profiles are created <li><a href="/profile">Profile</a></li> -->
-                                    <li><a href="/myCases">My Cases</a></li>
+                                    {% if hn == "have" %}
+                                        <li><a href="/myCases">My Matches</a></li>
+                                    {% else %}
+                                        <li><a href="/myCases">My Posts</a></li>
+                                    {% endif %}
                                     <!-- Removing settings link until settings are created <li><a href="/profile">Settings</a></li> -->
                                     <li role="separator" class="divider"></li>
                                     <li><a href="/logout">Log Out</a></li>

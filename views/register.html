@@ -14,7 +14,7 @@
 
 {% block head %}
     <h1><span class=" glyphicon glyphicon-modal-window" aria-hidden="true"></span> Register an Account</h1>
-    <p>Enter your information below to join the community and begin looking for a place to stay and commenting.</p> 
+    <p>Enter your information below to join the community.</p> 
 {% endblock %}
 
 {% block content %}
@@ -24,6 +24,7 @@
       {% if hn %}
         <input type="hidden" name="hn" value="{{hn}}" />
       {% else %}
+        <p>What describes you best?:</p>
         <select name="hn">
             <option value="have">Have</option>
             <option value="need">Need</option>
