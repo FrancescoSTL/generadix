@@ -31,35 +31,6 @@ router.get('/', function(request, response) {
 	var recentCasesCollection = db.get('cases');
 	var userName;
 
-	var featuredCases = [{	"caseName":"Police Shooting of Laquan McDonald",
-								"caseShortDescription":"Officer 1st Degree Murder", 
-								"caseCity":"Chicago, IL", 
-								"caseURL":"/casesu?caseID=56afd185a81aff8010ce474a", 
-								"caseImgURL":"https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/LAQUAN_McDonald_Chicago_memorial_from_protestors.jpg/480px-LAQUAN_McDonald_Chicago_memorial_from_protestors.jpg" 
-							},
-							{
-								"caseName":"Unlawful Conviction of Steven Avery",
-								"caseShortDescription":"Acquited after 18 years served", 
-								"caseCity":"Manitowoc, WI", 
-								"caseURL":"/case?caseID=56afd185a81aff8010ce474a", 
-								"caseImgURL":"http://pixel.nymag.com/imgs/daily/vulture/2015/12/30/30-making-a-murderer-netflix-steven-avery.w529.h529.2x.jpg" 
-							},
-							{
-								"caseName":"Battery of Journalist by Mizzou Professor",
-								"caseShortDescription":"Journalism student assaulted by MU prof.", 
-								"caseCity":"Columbia, MO", 
-								"caseURL":"/case?caseID=56afd185a81aff8010ce474a", 
-								"caseImgURL":"http://www.gannett-cdn.com/-mm-/3f6586c93baca5feed713bdbb48f05d91be03b0c/c=86-0-937-640&r=x404&c=534x401/local/-/media/2016/01/27/USATODAY/USATODAY/635895248768515224-melissaclick.jpg" 
-							},
-							{
-								"caseName":"Death of Eric Garner in NYC",
-								"caseShortDescription":"Put in chokehold by Staten Island PD", 
-								"caseCity":"Staten Island, NY", 
-								"caseURL":"/case?caseID=56afd185a81aff8010ce474a", 
-								"caseImgURL":"https://www.popularresistance.org/wp-content/uploads/2014/08/1garner.jpg"
-							}
-							];
-
 	recentCasesCollection.find({"privacy": "0"}, { sort: {$natural: -1 }, limit: 12}, function(err, cases) {
 		if(request.session.UID){
 			collection.findOne({'_id': request.session.UID}, function(err, user) {
@@ -69,7 +40,7 @@ router.get('/', function(request, response) {
 		}
 		else
 		{
-			response.render('index.html', {feature: true, featuredCases: featuredCases, title: title, brand: brand, recentCases: cases, loggedIn: false});
+			response.render('haveOrNeed.html');
 		}
 	});
 });
@@ -550,7 +521,11 @@ router.get('/loginFailure', function(request,response){
 });*/
 
 router.get('/register', function(request,response){
-	response.render('register.html', {title: title, brand: brand, loggedIn: false});
+	if (request.body.hn) {
+		response.render('register.html', {title: title, brand: brand, loggedIn: false, hn: request.body.hn});
+	} else {
+		response.render('register.html', {title: title, brand: brand, loggedIn: false});
+	}
 });
 
 router.get('/logout', function(request,response){
