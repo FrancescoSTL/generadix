@@ -35,7 +35,7 @@ router.get('/', function(request, response) {
 		if(request.session.UID){
 			collection.findOne({'_id': request.session.UID}, function(err, user) {
 				userName = user.username;
-				response.render('index.html', {feature: true, featuredCases: featuredCases, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true});
+				response.render('index.html', {feature: true, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true});
 			});
 		}
 		else
@@ -616,8 +616,9 @@ router.get('/loginFailure', function(request,response){
 });*/
 
 router.get('/register', function(request,response){
-	if (request.body.hn) {
-		response.render('register.html', {title: title, brand: brand, loggedIn: false, hn: request.body.hn});
+	if (request.query.hn) {
+		console.log('passing to register' + request.query.hn);
+		response.render('register.html', {title: title, brand: brand, loggedIn: false, hn: request.query.hn});
 	} else {
 		response.render('register.html', {title: title, brand: brand, loggedIn: false});
 	}
@@ -689,10 +690,11 @@ router.post('/register', function(request,response){
 					response.redirect('loginFailure.html');
 				}
 				request.session.UID = user._id;
-				if(request.body.rn == "have")
+				if(request.body.hn == "have")
 				{
 					response.redirect(301, '/accountCreated');
 				} else {
+					console.log(request.body.hn);
 					response.redirect(301, '/upload');
 				}
 			});
