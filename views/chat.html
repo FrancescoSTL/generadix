@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+<link href="/assets/styles/chat.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+
+
+
+<div class="chat">
+  <div class="chat-title">
+    <h1>I Have</h1>
+    <h2>LGBT</h2>
+    <figure class="avatar">
+      <img src="http://www.themeparkinsider.com/assets/PROF_NewUserIcon.png" /></figure>
+  </div>
+  <div class="messages">
+    <div class="messages-content"></div>
+  </div>
+  <div class="message-box">
+    <textarea type="text" class="message-input" placeholder="Type message..."></textarea>
+    <button type="submit" class="message-submit">Send</button>
+  </div>
+
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="/assets/js/chat.js"></script>
+
+
+{% endblock %}

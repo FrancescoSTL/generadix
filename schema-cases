@@ -1,0 +1,13 @@
+cases
++----------------------------------------------------+
+| key            | types    | occurrences | percents |
+| -------------- | -------- | ----------- | -------- |
+| _id            | ObjectId |           1 |    100.0 |
+| additionalLink | String   |           1 |    100.0 |
+| createdDate    | String   |           1 |    100.0 |
+| description    | String   |           1 |    100.0 |
+| officerName    | String   |           1 |    100.0 |
+| privacy        | String   |           1 |    100.0 |
+| title          | String   |           1 |    100.0 |
+| userCreated    | String   |           1 |    100.0 |
+| userName       | String   |           1 |    100.0 |

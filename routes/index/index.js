@@ -94,6 +94,8 @@ router.get('/upload', function(request, response) {
 	
 });
 
+
+
 // requesting upload directory
 router.post('/upload', function(request, response) {
 	var db = request.db;
@@ -114,10 +116,7 @@ router.post('/upload', function(request, response) {
 				caseCollection.insert({'title':request.body.caseTitle ,
 									'description':request.body.caseDescription, 
 									'youtubeURL':youtubeID,
-									/* 'officerName':request.body.officerName, */
-									'serviceCategory': request.body.serviceCategory,
-									'wantHave': ('wanthave' in request.body ? request.body.wantHave : 'want'),
-									'peopleCategory': request.body.peopleCategory,
+									'officerName':request.body.officerName,
 									'userCreated':request.session.UID,
 									'privacy':request.body.privacy,
 									'additionalLink':request.body.addtlLink,
@@ -223,10 +222,7 @@ router.get('/case', function(request, response) {
 									youtubeURL: youtubeEmbedURL,
 									caseNum: chosenCase._id,
 									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
-									/* 'officerName':request.body.officerName, */
-									serviceCategory: choseCase.serviceCategory,
-									wantHave: chosenCase.wantHave,
-									peopleCategory: chosenCase.peopleCategory,
+									officerName: chosenCase.officerName,
 									caseCity: "Chicago, IL",
 									userName: chosenCase.userName, 
 									loggedIn: true,
@@ -270,10 +266,7 @@ router.get('/case', function(request, response) {
 									youtubeURL: youtubeEmbedURL,
 									caseNum: chosenCase._id,
 									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
-									/* 'officerName':request.body.officerName, */
-									serviceCategory: choseCase.serviceCategory,
-									wantHave: chosenCase.wantHave,
-									peopleCategory: chosenCase.peopleCategory,
+									officerName: chosenCase.officerName,
 									caseCity: "Chicago, IL",
 									addtlLink: chosenCase.additionalLink,
 									loggedIn: false,
@@ -387,10 +380,7 @@ router.get("/edit", function(request,response){
 									caseDescription: chosenCase.description,
 									youtubeURL: chosenCase.youtubeURL,
 									caseNum: chosenCase._id,
-									/* 'officerName':request.body.officerName, */
-									serviceCategory: choseCase.serviceCategory,
-									wantHave: chosenCase.wantHave,
-									peopleCategory: chosenCase.peopleCategory,
+									officerName: chosenCase.officerName,
 									privacySelected: chosenCase.privacy,
 									privacySettings: privacySettings,
 									addtlLink: chosenCase.additionalLink,
@@ -602,10 +592,7 @@ router.post("/edit", function(request,response){
 											'title':request.body.caseTitle,
 											'description':request.body.caseDescription, 
 											'youtubeURL':youtubeID,
-											/* 'officerName':request.body.officerName, */
-											'serviceCategory': request.body.serviceCategory,
-											'wantHave': ('wanthave' in request.body ? request.body.wantHave : 'want'),
-											'peopleCategory': request.body.peopleCategory,
+											'officerName':request.body.officerName,
 											'userCreated':request.session.UID,
 											'privacy':request.body.privacy, 
 											'additionalLink':request.body.addtlLink,
@@ -651,6 +638,10 @@ router.get('/logout', function(request,response){
 	request.session.destroy(function (err) {
 		response.render('logout.html', {title: title, brand: brand, loggedIn: false});
 	});
+});
+
+router.get('/chat', function(req, res) {
+    res.render('chat.html');
 });
 
 router.get('/myCases', function(request,response){
