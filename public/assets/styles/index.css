@@ -6,7 +6,7 @@ body{
 /*
 .container {
     height: 100%;
-   
+
     width: 100%;
     padding: 0;
 }*/
@@ -73,3 +73,10 @@ input[type="submit"] {
 #results ul {
     list-style-position: inside;
 }
+
+.img-responsive, .thumbnail > img, .thumbnail a > img, .carousel-inner > .item > img, .carousel-inner > .item > a > img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    padding-left: 15%;
+    padding-right: 12%;}
