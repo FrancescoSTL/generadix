@@ -116,7 +116,7 @@ router.post('/upload', function(request, response) {
 									'youtubeURL':youtubeID,
 									/* 'officerName':request.body.officerName, */
 									'serviceCategory': request.body.serviceCategory,
-									'wantHave': request.body.wantHave,
+									'wantHave': ('wanthave' in request.body ? request.body.wantHave : 'want'),
 									'peopleCategory': request.body.peopleCategory,
 									'userCreated':request.session.UID,
 									'privacy':request.body.privacy,
@@ -135,7 +135,7 @@ router.post('/upload', function(request, response) {
 									'description':request.body.caseDescription, 
 									/* 'officerName':request.body.officerName, */
 									'serviceCategory': request.body.serviceCategory,
-									'wantHave': request.body.wantHave,
+									'wantHave': ('wanthave' in request.body ? request.body.wantHave : 'want')
 									'peopleCategory': request.body.peopleCategory,
 									'userCreated':request.session.UID,
 									'privacy':request.body.privacy,
@@ -529,7 +529,7 @@ router.post("/edit", function(request,response){
 											'youtubeURL':youtubeID,
 											/* 'officerName':request.body.officerName, */
 											'serviceCategory': request.body.serviceCategory,
-											'wantHave': request.body.wantHave,
+											'wantHave': ('wanthave' in request.body ? request.body.wantHave : 'want'),
 											'peopleCategory': request.body.peopleCategory,
 											'userCreated':request.session.UID,
 											'privacy':request.body.privacy, 
