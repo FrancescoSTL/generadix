@@ -19,7 +19,11 @@
         {% if peopleCategory == 2 %}
             <h1>Browsing Military Veterans in need</h1>
         {% endif %}
+    {% else %}
+        <h1><b>Welcome to HaveNeed 🌈</b></h1>
+        <p>Start discovering below by selecting one of the cases.</p> 
     {% endif %}
+
 {% endblock %}
 
 {% block content %}
@@ -36,7 +40,6 @@
                     <button class="btn btn-default" style="width: 200px; height: 50px;">Military Veteran</button>
                     <input type="hidden" name="cat" value="2" />
                 </form>
-            
                 <div id="step1">
                     <fieldset id="background">
                         {% if feature %}
