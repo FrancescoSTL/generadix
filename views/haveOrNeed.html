@@ -10,19 +10,18 @@
 
 {% block head %}
     <h1><b>Welcome to HaveNeed</b></h1>
-    <p>Some startupy tagline that makes people really emotional.</p> 
+    <p>Some startupy tagline that makes people really emotional.</p>
 {% endblock %}
 
 {% block content %}
     <div class="row">
         <form action="/register">
-            <button class="btn btn-default" style="width: 350px; height: 200px;">HAVE</button>
+            <button class="btn btn-default" style="width: 350px; height: 200px;">HAVE<br><h1>💛</h1></button>
             <input type="hidden" name="hn" value="have" />
         </form>
         <form action="/register">
-            <button class="btn btn-default btn-lg"  style="width: 350px; height: 200px;">NEED</button>
+            <button class="btn btn-default btn-lg"  style="width: 350px; height: 200px;">NEED<br><h1>🏡</h1></button>
             <input type="hidden" name="hn" value="need" />
         </form>
     </div>
 {% endblock %}
-
