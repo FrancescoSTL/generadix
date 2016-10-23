@@ -21,7 +21,9 @@
 {% block content %}
         <form id="build-case" action="/delete?caseID={{caseNum}}" method="post">
             <a class="btn btn-default" href="/case?caseID={{caseNum}}" role="button" style="margin-top: 10px; height: 40px;">Go Back</a>
-            <input type="submit" value="Delete Case" />
+
+            <input class="btn btn-default" role="button" style="margin-top: 10px; height: 40px;" type="submit" value="Delete Case" />
+
         </form>
 
 {% endblock %}
