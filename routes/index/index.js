@@ -2,7 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-
+var mongo = require('mongodb');
 var stepAPI = 0;
 var stepPage = 0;
 var title= "HaveNeed";
@@ -35,7 +35,7 @@ router.get('/', function(request, response) {
 		if(request.session.UID){
 			collection.findOne({'_id': request.session.UID}, function(err, user) {
 				userName = user.username;
-				response.render('index.html', {feature: true, featuredCases: featuredCases, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true});
+				response.render('index.html', {feature: true, title: title, brand: brand, userName: userName, recentCases: cases, loggedIn: true});
 			});
 		}
 		else
@@ -72,8 +72,10 @@ router.post('/upload', function(request, response) {
 	var db = request.db;
 	var collection = db.get('userInfo');
 	var userName;
-
+    console.log("recd request");
+    console.log(request.session);
 	if(request.session.UID){
+	    console.log("UID ok");
 		collection.findOne({'_id': request.session.UID}, function(err, user) {
 			userName = user.username;
 
@@ -99,7 +101,7 @@ router.post('/upload', function(request, response) {
 									'claimedDate' : null, // matching user date
 									'createdDate': today},
 					function(err, data) {
-
+                        console.err(err);
 						response.redirect(301, "/");
 					}
 				);
@@ -120,7 +122,7 @@ router.post('/upload', function(request, response) {
 									'claimedDate' : null, // matching user date
 									'createdDate': today},
 					function(err, data) {
-
+                        console.log(err);
 						response.redirect(301, "/");
 					}
 				);
@@ -132,6 +134,7 @@ router.post('/upload', function(request, response) {
 	}
 	else
 	{
+        console.err("not logged in");
 		response.render('login.html', {title: title, brand: brand, userLogged: false});
 	}
 });
@@ -197,7 +200,7 @@ router.get('/case', function(request, response) {
 									caseNum: chosenCase._id,
 									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
 									/* 'officerName':request.body.officerName, */
-									serviceCategory: choseCase.serviceCategory,
+									serviceCategory: chosenCase.serviceCategory,
 									needHave: chosenCase.needHave,
 									peopleCategory: chosenCase.peopleCategory,
 									caseCity: "Chicago, IL",
@@ -244,7 +247,7 @@ router.get('/case', function(request, response) {
 									caseNum: chosenCase._id,
 									mapsAPISource: "https://www.google.com/maps/embed/v1/place?q=" + latitude + "%2C" + longitude + "&key="+process.env.API_Key,
 									/* 'officerName':request.body.officerName, */
-									serviceCategory: choseCase.serviceCategory,
+									serviceCategory: chosenCase.serviceCategory,
 									needHave: chosenCase.needHave,
 									peopleCategory: chosenCase.peopleCategory,
 									caseCity: "Chicago, IL",
@@ -361,7 +364,7 @@ router.get("/edit", function(request,response){
 									youtubeURL: chosenCase.youtubeURL,
 									caseNum: chosenCase._id,
 									/* 'officerName':request.body.officerName, */
-									serviceCategory: choseCase.serviceCategory,
+									serviceCategory: chosenCase.serviceCategory,
 									needHave: chosenCase.needHave,
 									peopleCategory: chosenCase.peopleCategory,
 									privacySelected: chosenCase.privacy,
@@ -490,8 +493,9 @@ router.post('/match', function (request,response) {
 
 
 			// find the case they want to edit
-			collection.findOne({'_id': request.query.caseID}, function(err, chosenCase) {
-
+            console.log(request);
+			collection.findOne({'_id': new mongo.ObjectID(request.query.caseID)}, function(err, chosenCase) {
+                if(err){return response.status(500).send(err.toString());}
 				// if they created the case they want to edit, let them
 				if(chosenCase.claimingUserId == null)
 				{
@@ -510,7 +514,7 @@ router.post('/match', function (request,response) {
 							youtubeURL: chosenCase.youtubeURL,
 							caseNum: chosenCase._id,
 							/* 'officerName':request.body.officerName, */
-							serviceCategory: choseCase.serviceCategory,
+							serviceCategory: chosenCase.serviceCategory,
 							needHave: chosenCase.needHave,
 							peopleCategory: chosenCase.peopleCategory,
 							privacySelected: chosenCase.privacy,
@@ -531,6 +535,7 @@ router.post('/match', function (request,response) {
 				// if the user is not the one who created the case, send them back to the case page (for now). In the future, we will send them to inadquate permissions page
 				else
 				{
+
 					response.redirect(301, "/case?caseID="+request.query.caseID);
 				}
 
@@ -540,6 +545,7 @@ router.post('/match', function (request,response) {
 	// if the user is not logged in, send them back to the case page (for now). In the future, we will send them to inadquate permissions page
 	else
 	{
+	    console.log("err with UID");
 		response.redirect(301, "/case?caseID="+request.query.caseID);
 	}
 });
