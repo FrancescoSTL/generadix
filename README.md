@@ -1,5 +1,5 @@
-# Web-App
-The beta web application for FedUp 2
+# HaveNeed
+The beta web application for HaveNeed 2
 
 steps to set up:
 

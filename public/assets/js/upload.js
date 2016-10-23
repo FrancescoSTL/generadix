@@ -15,7 +15,7 @@ $(nextBtn).click(function() {
 	{
 		case "0":
 			title.text("Who does this involve?");
-			subhead.text("This can be the person, organization, or group involved with your occurence. FedUp makes it easy to find officer numbers and police departments and it helps the community identify reoccuring patterns of injustice.");
+			subhead.text("This can be the person, organization, or group involved with your occurence. HaveNeed makes it easy to find officer numbers and police departments and it helps the community identify reoccuring patterns of injustice.");
 			titlePage.toggle();
 			tagsPage.toggle();
 			prevButton.toggle();
@@ -53,7 +53,7 @@ $(prevBtn).click(function() {
 			break;
 		case "2":
 			title.text("Who does this involve?");
-			subhead.text("This can be the person, organization, or group involved with your occurence. FedUp makes it easy to find officer numbers and police departments and it helps the community identify reoccuring patterns of injustice.");
+			subhead.text("This can be the person, organization, or group involved with your occurence. HaveNeed makes it easy to find officer numbers and police departments and it helps the community identify reoccuring patterns of injustice.");
 			descPage.toggle();
 			tagsPage.toggle();
 			progress.text("1");

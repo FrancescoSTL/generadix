@@ -5,8 +5,8 @@ var router = express.Router();
 
 var stepAPI = 0;
 var stepPage = 0;
-var title= "FedUp";
-var brand= "Empowering Citizens in Police Interactions";
+var title= "HaveNeed";
+var brand= "Warm beds for those in need";
 
 // get today's date
 var today = new Date();
